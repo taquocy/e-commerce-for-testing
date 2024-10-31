@@ -3,7 +3,7 @@ import Cards from "../../components/Card";
 import { Grid, Box, Flex, Button } from "@chakra-ui/react";
 import { useInfiniteQuery } from "react-query";
 import { fetchProductList } from "../../api.js";
-
+//Hello thay y
 function Products() {
   const {
     data,
