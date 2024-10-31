@@ -5,6 +5,9 @@ import Boom from 'boom';
 import cors from 'cors';
 import routes from './routes';
 
+
+// TODO : Fix bug
+
 const app = express();
 
 app.use(cors());
