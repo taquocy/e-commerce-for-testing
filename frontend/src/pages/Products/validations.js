@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 const editScheme = yup.object().shape({
-  title: yup.string().max(25, "Title is too long").required(),
+  title: yup.string().max(25, "Title is too long").required(), 
   description: yup.string().min(5).required(),
   price: yup.number()
   .typeError('Price must be a valid number')
