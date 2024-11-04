@@ -17,9 +17,9 @@ axios.interceptors.request.use(
   }
 );
 
-export const fetchProductList = async ({ pageParam = 1 }) => {
+export const fetchProductList = async ({ pageParam = 1, search = "", filter = {} }) => {
   const { data } = await axios.get(
-    `${process.env.REACT_APP_BASE_ENDPOINT}/product?page=${pageParam}`
+    `${process.env.REACT_APP_BASE_ENDPOINT}/product?page=${pageParam}&search=${search}&filter=${JSON.stringify(filter)}`
   );
 
   return data;
