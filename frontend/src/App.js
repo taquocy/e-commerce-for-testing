@@ -13,6 +13,7 @@ import Orders from "./pages/Admin/Orders";
 import AdminProducts from "./pages/Admin/AdminProducts";
 import AdminProductDetail from "./pages/Admin/AdminProductDetail";
 import NewProduct from "./pages/Products/New";
+import Chat from "./pages/Chat/index";
 
 function App() {
   return (
@@ -35,15 +36,12 @@ function App() {
               <Route path="new" element={<NewProduct />} />
             </Route>
           </Route>
+          <Route path="/chat" element={<Chat />} />
           <Route path="*" element={<Error404 />} />
         </Routes>
       </div>
     </>
   );
 }
-
-
-
-
 
 export default App;
