@@ -9,5 +9,7 @@ router.post('/login', auth.Login);
 router.post('/refresh_token', auth.RefreshToken);
 router.post('/logout', auth.Logout);
 router.get('/me', verifyAccessToken, auth.Me);
+router.post('/forgot_password', auth.ForgotPassword);
+router.post('/reset_password', auth.ResetPassword);
 
 export default router;

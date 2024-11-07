@@ -8,48 +8,41 @@ import {
   Input,
   Button,
   Alert,
-  Link,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import validationSchema from "./validations";
-import { fetchLogin } from "../../../api";
-import { useAuth } from "../../../contexts/AuthContext";
+import { fetchResetPassword } from "../../../api";
 import { useNavigate } from "react-router-dom";
 
-function Signin() {
-  const { login } = useAuth();
+function ResetPassword() {
   const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
       email: "",
-      password: "",
+      newPassword: "",
+      confirmPassword: "",
     },
     validationSchema,
     onSubmit: async (values, bag) => {
       try {
-        const loginResponse = await fetchLogin({
+        const resetPasswordResponse = await fetchResetPassword({
           email: values.email,
-          password: values.password,
+          newPassword: values.newPassword,
         });
-        login(loginResponse);
-        navigate("/profile");
+        navigate("/signin");
       } catch (e) {
         bag.setErrors({ general: e.response.data.message });
       }
     },
   });
 
-  const handleForgotPasswordClick = () => {
-    navigate("/reset-password");
-  };
-
   return (
     <div>
       <Flex align="center" width="full" justifyContent="center">
         <Box pt={10}>
           <Box textAlign="center">
-            <Heading>Signin</Heading>
+            <Heading>Reset Password</Heading>
           </Box>
           <Box my={5}>
             {formik.errors.general && (
@@ -70,26 +63,33 @@ function Signin() {
               </FormControl>
 
               <FormControl mt="4">
-                <FormLabel>Password</FormLabel>
+                <FormLabel>New Password</FormLabel>
                 <Input
-                  name="password"
+                  name="newPassword"
                   type="password"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.password}
-                  isInvalid={formik.touched.password && formik.errors.password}
+                  value={formik.values.newPassword}
+                  isInvalid={formik.touched.newPassword && formik.errors.newPassword}
+                />
+              </FormControl>
+
+              <FormControl mt="4">
+                <FormLabel>Confirm Password</FormLabel>
+                <Input
+                  name="confirmPassword"
+                  type="password"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.confirmPassword}
+                  isInvalid={formik.touched.confirmPassword && formik.errors.confirmPassword}
                 />
               </FormControl>
 
               <Button mt="4" width="full" type="submit">
-                Sign In
+                Reset Password
               </Button>
             </form>
-          </Box>
-          <Box textAlign="center" mt="4">
-            <Link color="teal.500" onClick={handleForgotPasswordClick}>
-              Forgot Password?
-            </Link>
           </Box>
         </Box>
       </Flex>
@@ -97,4 +97,4 @@ function Signin() {
   );
 }
 
-export default Signin;
+export default ResetPassword;

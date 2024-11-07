@@ -1,5 +1,6 @@
 import Boom from "boom";
 import User from "../../models/user";
+import bcrypt from "bcrypt";
 
 // helpers
 import {
@@ -139,10 +140,60 @@ const Me = async (req, res, next) => {
 	}
 };
 
+const ForgotPassword = async (req, res, next) => {
+	const { email } = req.body;
+
+	try {
+		const user = await User.findOne({ email });
+
+		if (!user) {
+			throw Boom.notFound("The email address was not found.");
+		}
+
+		// Generate a password reset token
+		const resetToken = await signAccessToken({ user_id: user._id });
+
+		// Send the reset token to the user's email
+		// You can use a library like nodemailer to send the email
+
+		res.json({ message: "Password reset token sent to email." });
+	} catch (e) {
+		next(e);
+	}
+};
+
+const ResetPassword = async (req, res, next) => {
+	const { resetToken, newPassword } = req.body;
+
+	try {
+		const { user_id } = await verifyAccessToken(resetToken);
+
+		const user = await User.findById(user_id);
+
+		if (!user) {
+			throw Boom.notFound("User not found.");
+		}
+
+		// Hash the new password
+		const salt = await bcrypt.genSalt(10);
+		const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+		// Update the user's password
+		user.password = hashedPassword;
+		await user.save();
+
+		res.json({ message: "Password reset successful." });
+	} catch (e) {
+		next(e);
+	}
+};
+
 export default {
 	Register,
 	Login,
 	RefreshToken,
 	Logout,
 	Me,
+	ForgotPassword,
+	ResetPassword,
 };
