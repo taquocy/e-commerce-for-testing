@@ -108,3 +108,12 @@ export const updateProduct = async (input, product_id) => {
 
   return data;
 };
+
+export const updateOrder = async (input, orderId) => {
+  const { data } = await axios.put(
+    `${process.env.REACT_APP_BASE_ENDPOINT}/order/${orderId}`,
+    input
+  );
+
+  return data;
+};
