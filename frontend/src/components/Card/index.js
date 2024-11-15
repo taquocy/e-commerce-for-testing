@@ -54,7 +54,7 @@ function Cards({ item }) {
             {findBasketItem ? "Remove from Basket" : "Add to Basket"}
           </Button>
           <Button variant="ghost" colorScheme="blue">
-            Add to cartkkkkkkkkk
+            Add to carthhh
           </Button>
         </ButtonGroup>
       </CardFooter>
