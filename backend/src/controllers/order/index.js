@@ -12,18 +12,17 @@ const Create = async (req, res, next) => {
     return next(Boom.badRequest(error.details[0].message));
   }
 
-  const { user_id } = req.payload;
+  const { user_id } = req.payload; 
 
   try {
     const order = new Order({
       user: user_id,
-      adress: input.address,
+      address: input.address, 
       items: input.items,
     });
 
     const savedData = await order.save();
-
-    res.json(savedData);
+    res.json(savedData); 
   } catch (e) {
     next(e);
   }
@@ -32,20 +31,18 @@ const Create = async (req, res, next) => {
 const List = async (req, res, next) => {
   try {
     const orders = await Order.find({}).populate('user', '-password -__v').populate('items');
-
-    res.json(orders);
+    res.json(orders); 
   } catch (e) {
-    next(e);
+    next(e); 
   }
 };
 
 const GetMyOrders = async (req, res, next) => {
-  const { user_id } = req.payload;
+  const { user_id } = req.payload; // Get user_id from JWT token payload
 
   try {
-    const orders = await Order.findById(user_id).populate('purchases.item');
-
-    res.json(orders);
+    const orders = await Order.find({ user: user_id }).populate('items');
+    res.json(orders); // Return orders for the logged-in user
   } catch (e) {
     next(e);
   }
