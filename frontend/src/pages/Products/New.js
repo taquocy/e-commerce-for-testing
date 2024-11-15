@@ -151,7 +151,7 @@ function NewProduct() {
                                     colorScheme="red"
                                     onClick={() => arrayHelpers.remove(index)}
                                   >
-                                    Remove
+                                    REMOVE
                                   </Button>
                                 </div>
                               ))}
