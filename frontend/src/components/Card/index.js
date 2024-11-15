@@ -23,7 +23,7 @@ function Cards({ item }) {
   );
 
   return (
-    <Card maxW="sm">
+    <Card maxW="sm">okokok
       <Link to={`/product/${item._id}`}>
         <CardBody>
           <Image
