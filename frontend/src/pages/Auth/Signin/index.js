@@ -41,7 +41,7 @@ function Signin({ history }) {
       <Flex align="center" width="full" justifyContent="center">
         <Box pt={10}>
           <Box textAlign="center">
-            <Heading>Signin</Heading>
+            <Heading>Sign In</Heading>
           </Box>
           <Box my={5}>
             {formik.errors.general && (
@@ -62,7 +62,7 @@ function Signin({ history }) {
               </FormControl>
 
               <FormControl mt="4">
-                <FormLabel>Passworda</FormLabel>
+                <FormLabel>Password</FormLabel>
                 <Input
                   name="password"
                   type="password"
