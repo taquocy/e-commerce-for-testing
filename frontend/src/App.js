@@ -13,6 +13,7 @@ import Orders from "./pages/Admin/Orders";
 import AdminProducts from "./pages/Admin/AdminProducts";
 import AdminProductDetail from "./pages/Admin/AdminProductDetail";
 import NewProduct from "./pages/Products/New";
+import ResetPassword from "./pages/Auth/ResetPassword/index";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/basket" element={<Basket />} />
           <Route path="/profile" element={<ProductedProfile />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/admin">
             <Route index element={<ProductedAdmin />} />
             <Route path="orders" element={<Orders />} />
@@ -41,9 +43,5 @@ function App() {
     </>
   );
 }
-
-
-
-
 
 export default App;

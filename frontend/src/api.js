@@ -108,3 +108,12 @@ export const updateProduct = async (input, product_id) => {
 
   return data;
 };
+
+export const fetchResetPassword = async (input) => {
+  const { data } = await axios.post(
+    `${process.env.REACT_APP_BASE_ENDPOINT}/auth/reset_password`,
+    input
+  );
+
+  return data;
+};
