@@ -57,7 +57,7 @@ function NewProduct() {
         </ul>
       </nav>
       <Box mt={10}>
-        <Text fontsize="2xl">Edit</Text>
+        <Text fontsize="2xl">Add new product</Text>
         <Formik
           initialValues={{
             title: "",
