@@ -51,7 +51,7 @@ function Signin({ history }) {
           <Box my={5} textAlign="left">
             <form onSubmit={formik.handleSubmit}>
               <FormControl>
-                <FormLabel>E-mail</FormLabel>
+                <FormLabel>Email</FormLabel>
                 <Input
                   name="email"
                   onChange={formik.handleChange}
