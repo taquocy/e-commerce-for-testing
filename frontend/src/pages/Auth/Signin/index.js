@@ -62,7 +62,7 @@ function Signin({ history }) {
               </FormControl>
 
               <FormControl mt="4">
-                <FormLabel>Password</FormLabel>
+                <FormLabel>Passworda</FormLabel>
                 <Input
                   name="password"
                   type="password"
