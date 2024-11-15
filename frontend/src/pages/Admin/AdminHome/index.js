@@ -9,7 +9,7 @@ function AdminHome() {
       <nav>
         <ul className="admin-menu">
           <li>
-            <Link to="/admin">Home</Link>
+            <Link to="/admin">Homsdfsdfse</Link>
           </li>
           <li>
             <Link to="/admin/orders">Order</Link>
