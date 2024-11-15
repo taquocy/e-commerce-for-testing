@@ -50,7 +50,7 @@ function ProductDetail() {
               {data.description}
             </Text>
             <Text color="blue.600" fontSize="2xl">
-              {data.price}$
+              {data.price}$ Không giảm giá
             </Text>
           </CardBody>
 
