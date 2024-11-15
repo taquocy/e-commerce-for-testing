@@ -43,7 +43,7 @@ function Profile() {
           <br />
           <br />
           <Link to="/">
-            <Button colorScheme="pink" variant="solid" onClick={handleLogout}>
+            <Button colorScheme="blue" variant="solid" onClick={handleLogout}>
               Logout
             </Button>
           </Link>
