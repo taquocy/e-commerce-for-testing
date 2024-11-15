@@ -51,6 +51,7 @@ function ProductDetail() {
             </Text>
             <Text color="blue.600" fontSize="2xl">
               {data.price}$
+              klklklklk
             </Text>
           </CardBody>
 
