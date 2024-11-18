@@ -108,3 +108,12 @@ export const updateProduct = async (input, product_id) => {
 
   return data;
 };
+
+export const updateProfile = async (input) => {
+  const { data } = await axios.put(
+    `${process.env.REACT_APP_BASE_ENDPOINT}/auth/profile`,
+    input
+  );
+
+  return data;
+};
