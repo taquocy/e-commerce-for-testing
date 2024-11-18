@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-const validationSchema = Yup.object({
+const validation = Yup.object({
   email: Yup.string()
     .email("Định dạng phải có '@' trong chuỗi")
     .required("Bạn chưa nhập địa chỉ email"),
@@ -9,4 +9,4 @@ const validationSchema = Yup.object({
     .required("Bạn chưa nhập mật khẩu"),
 });
 
-export default validationSchema;
+export default validation;
