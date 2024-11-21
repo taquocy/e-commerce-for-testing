@@ -8,6 +8,7 @@ import {
   Input,
   Button,
   Alert,
+  Text,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import validationSchema from "./validations";
@@ -36,12 +37,13 @@ function Signin({ history }) {
       }
     },
   });
+
   return (
     <div>
       <Flex align="center" width="full" justifyContent="center">
-        <Box pt={10}>
+        <Box pt={10} maxW="400px" width="full">
           <Box textAlign="center">
-            <Heading>Signin</Heading>
+            <Heading>Sign In</Heading>
           </Box>
           <Box my={5}>
             {formik.errors.general && (
@@ -50,18 +52,28 @@ function Signin({ history }) {
           </Box>
           <Box my={5} textAlign="left">
             <form onSubmit={formik.handleSubmit}>
-              <FormControl>
+              {/* Email Field */}
+              <FormControl isInvalid={formik.touched.email && formik.errors.email}>
                 <FormLabel>E-mail</FormLabel>
                 <Input
                   name="email"
+                  type="email"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
-                  isInvalid={formik.touched.email && formik.errors.email}
                 />
+                {formik.touched.email && formik.errors.email && (
+                  <Text color="red.500" fontSize="sm" mt={1}>
+                    {formik.errors.email}
+                  </Text>
+                )}
               </FormControl>
 
-              <FormControl mt="4">
+              {/* Password Field */}
+              <FormControl
+                mt="4"
+                isInvalid={formik.touched.password && formik.errors.password}
+              >
                 <FormLabel>Password</FormLabel>
                 <Input
                   name="password"
@@ -69,11 +81,16 @@ function Signin({ history }) {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
-                  isInvalid={formik.touched.password && formik.errors.password}
                 />
+                {formik.touched.password && formik.errors.password && (
+                  <Text color="red.500" fontSize="sm" mt={1}>
+                    {formik.errors.password}
+                  </Text>
+                )}
               </FormControl>
 
-              <Button mt="4" width="full" type="submit">
+              {/* Submit Button */}
+              <Button mt="4" width="full" type="submit" colorScheme="blue">
                 Sign In
               </Button>
             </form>
@@ -85,6 +102,3 @@ function Signin({ history }) {
 }
 
 export default Signin;
-
-
-// TODO:
