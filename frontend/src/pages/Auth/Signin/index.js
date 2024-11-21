@@ -41,9 +41,9 @@ function Signin({ history }) {
   return (
     <div>
       <Flex align="center" width="full" justifyContent="center">
-        <Box pt={10} maxW="400px" width="full">
+        <Box pt={10}>
           <Box textAlign="center">
-            <Heading>Sign In</Heading>
+            <Heading>Signin</Heading>
           </Box>
           <Box my={5}>
             {formik.errors.general && (
@@ -57,7 +57,6 @@ function Signin({ history }) {
                 <FormLabel>E-mail</FormLabel>
                 <Input
                   name="email"
-                  type="email"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
@@ -70,10 +69,7 @@ function Signin({ history }) {
               </FormControl>
 
               {/* Password Field */}
-              <FormControl
-                mt="4"
-                isInvalid={formik.touched.password && formik.errors.password}
-              >
+              <FormControl isInvalid={formik.touched.password && formik.errors.password} mt="4">
                 <FormLabel>Password</FormLabel>
                 <Input
                   name="password"
@@ -89,7 +85,6 @@ function Signin({ history }) {
                 )}
               </FormControl>
 
-              {/* Submit Button */}
               <Button mt="4" width="full" type="submit" colorScheme="blue">
                 Sign In
               </Button>
