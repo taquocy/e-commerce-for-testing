@@ -11,7 +11,7 @@ const validations = yup.object().shape({
   // Password field validation
   password: yup
     .string()
-    .min(10, "Password must be at least 10 characters long.") // Ensure password has at least 10 characters
+    .min(6, "Password must be at least 6 characters long.") // Ensure password has at least 10 characters
     .required("Password is required."), // Ensure the password field is not empty
 });
 
