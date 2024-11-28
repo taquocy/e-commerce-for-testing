@@ -57,7 +57,7 @@ function NewProduct() {
         </ul>
       </nav>
       <Box mt={10}>
-        <Text fontsize="2xl">Edit</Text>
+        <Text fontsize="2xl">Add New Product</Text>
         <Formik
           initialValues={{
             title: "",
@@ -77,106 +77,112 @@ function NewProduct() {
             values,
             isSubmitting,
           }) => (
-            <>
-              <Box>
-                <Box my={5} textAlign="left">
-                  <form onSubmit={handleSubmit}>
-                    <FormControl>
-                      <FormLabel>Title</FormLabel>
-                      <Input
-                        name="title"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.title}
-                        disabled={isSubmitting}
-                        isInvalid={touched.title && errors.title}
-                      />
-                      {touched.title && errors.title && (
-                        <Text mt={2} color="red.500">
-                          {errors.title}
-                        </Text>
+            <Box>
+              <Box my={5} textAlign="left">
+                <form onSubmit={handleSubmit}>
+                  <FormControl>
+                    <FormLabel>Title</FormLabel>
+                    <Input
+                      name="title"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.title}
+                      disabled={isSubmitting}
+                      isInvalid={touched.title && errors.title}
+                    />
+                    {touched.title && errors.title && (
+                      <Text mt={2} color="red.500">
+                        {errors.title}
+                      </Text>
+                    )}
+                  </FormControl>
+                  <FormControl mt={4}>
+                    <FormLabel>Description</FormLabel>
+                    <Textarea
+                      name="description"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.description}
+                      disabled={isSubmitting}
+                      isInvalid={touched.description && errors.description}
+                    />
+                    {touched.description && errors.description && (
+                      <Text mt={2} color="red.500">
+                        {errors.description}
+                      </Text>
+                    )}
+                  </FormControl>
+                  <FormControl mt={4}>
+                    <FormLabel>Price</FormLabel>
+                    <Input
+                      name="price"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.price}
+                      disabled={isSubmitting}
+                      isInvalid={touched.price && errors.price}
+                    />
+                    {touched.price && errors.price && (
+                      <Text mt={2} color="red.500">
+                        {errors.price}
+                      </Text>
+                    )}
+                  </FormControl>
+                  <FormControl mt={4}>
+                    <FormLabel>Photos</FormLabel>
+                    <FieldArray
+                      name="photos"
+                      render={(arrayHelpers) => (
+                        <div>
+                          {values.photos &&
+                            values.photos.map((photo, index) => (
+                              <div key={index} style={{ marginBottom: "1rem" }}>
+                                <Input
+                                  name={`photos.${index}`}
+                                  value={photo}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  disabled={isSubmitting}
+                                  width="90%"
+                                  isInvalid={
+                                    touched.photos?.[index] &&
+                                    errors.photos?.[index]
+                                  }
+                                />
+                                <Button
+                                  ml="4"
+                                  type="button"
+                                  colorScheme="red"
+                                  onClick={() => arrayHelpers.remove(index)}
+                                >
+                                  Remove
+                                </Button>
+                                {touched.photos?.[index] &&
+                                  errors.photos?.[index] && (
+                                    <Text mt={2} color="red.500">
+                                      {errors.photos[index]}
+                                    </Text>
+                                  )}
+                              </div>
+                            ))}
+                          <Button mt="5" onClick={() => arrayHelpers.push("")}>
+                            Add a Photo
+                          </Button>
+                        </div>
                       )}
-                    </FormControl>
-                    <FormControl mt={4}>
-                      <FormLabel>Description</FormLabel>
-                      <Textarea
-                        name="description"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.description}
-                        disabled={isSubmitting}
-                        isInvalid={touched.description && errors.description}
-                      />
-                      {touched.description && errors.description && (
-                        <Text mt={2} color="red.500">
-                          {errors.description}
-                        </Text>
-                      )}
-                    </FormControl>
-                    <FormControl mt={4}>
-                      <FormLabel>Price</FormLabel>
-                      <Input
-                        name="price"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.price}
-                        disabled={isSubmitting}
-                        isInvalid={touched.description && errors.description}
-                      />
-                      {touched.price && errors.price && (
-                        <Text mt={2} color="red.500">
-                          {errors.price}
-                        </Text>
-                      )}
-                    </FormControl>
-                    <FormControl mt={4}>
-                      <FormLabel>Photos</FormLabel>
-                      <FieldArray
-                        name="photos"
-                        render={(arrayHelpers) => (
-                          <div>
-                            {values.photos &&
-                              values.photos.map((photo, index) => (
-                                <div key={index}>
-                                  <Input
-                                    name={`photos.${index}`}
-                                    value={photo}
-                                    disabled={isSubmitting}
-                                    onChange={handleChange}
-                                    width="90%"
-                                  />
-                                  <Button
-                                    ml="4"
-                                    type="button"
-                                    colorScheme="red"
-                                    onClick={() => arrayHelpers.remove(index)}
-                                  >
-                                    Remove
-                                  </Button>
-                                </div>
-                              ))}
-                            <Button
-                              mt="5"
-                              onClick={() => arrayHelpers.push("")}
-                            >
-                              Add a Photo
-                            </Button>
-                          </div>
-                        )}
-                      />
-                    </FormControl>
-                    <Button
-                      mt={4}
-                      width="full"
-                      type="submit"
-                      isLoading={isSubmitting}
-                    >
-                      Add Product
-                    </Button>
-                  </form>
-                </Box>
+                    />
+                  </FormControl>
+                  <Button
+                    mt={4}
+                    width="full"
+                    type="submit"
+                    isLoading={isSubmitting}
+                  >
+                    Add Product
+                  </Button>
+                </form>
               </Box>
-            </>
+            </Box>
           )}
         </Formik>
       </Box>
