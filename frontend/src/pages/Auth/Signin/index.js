@@ -41,7 +41,7 @@ function Signin({ history }) {
       <Flex align="center" width="full" justifyContent="center">
         <Box pt={10}>
           <Box textAlign="center">
-            <Heading>Signin</Heading>
+            <Heading>Sign In</Heading>
           </Box>
           <Box my={5}>
             {formik.errors.general && (
@@ -51,7 +51,7 @@ function Signin({ history }) {
           <Box my={5} textAlign="left">
             <form onSubmit={formik.handleSubmit}>
               <FormControl>
-                <FormLabel>E-mail</FormLabel>
+                <FormLabel>Email</FormLabel>
                 <Input
                   name="email"
                   onChange={formik.handleChange}
