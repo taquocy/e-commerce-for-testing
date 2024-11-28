@@ -173,6 +173,14 @@ function NewProduct() {
                     >
                       Add Product
                     </Button>
+                    <Button
+                      mt={5}
+                      width="full"
+                      onClick={() => window.location.href = '/admin'}
+                      colorScheme="red"
+                    >
+                      Cancel
+                    </Button>
                   </form>
                 </Box>
               </Box>
