@@ -19,6 +19,15 @@ import NewProduct from "./pages/Products/New";
 
 
 
+// import React from "react";
+// import { AuthProvider } from "./contexts/AuthContext";
+// import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+// import Signin from "./components/Signin";
+// import Profile from "./components/Profile";
+
+
+
+
 
 
 function App() {
@@ -44,6 +53,18 @@ function App() {
             </Route>
           </Route>
           <Route path="*" element={<Error404 />} />
+
+          {/* <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Signin />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </Router>
+    </AuthProvider> */}
+
+
+
         </Routes>
       </div>
     </>

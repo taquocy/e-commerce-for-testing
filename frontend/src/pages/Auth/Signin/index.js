@@ -14,11 +14,11 @@ import {
   InputRightElement,
   Link,
 } from "@chakra-ui/react";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; 
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useFormik } from "formik";
-import validationSchema from "./validations";
-import { fetchLogin } from "../../../api";
-import { useAuth } from "../../../contexts/AuthContext";
+import validationSchema from "./validations";  // Đảm bảo bạn có validation schema
+import { fetchLogin } from "../../../api"; // Thực hiện gọi API đăng nhập
+import { useAuth } from "../../../contexts/AuthContext"; // Context auth nếu có
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 function Signin() {
@@ -36,8 +36,10 @@ function Signin() {
     onSubmit: async (values, bag) => {
       setIsSubmitting(true);
       try {
-        const loginResponse = await fetchLogin(values);
-        login(loginResponse);
+        const loginResponse = await fetchLogin(values); // Gọi API login
+        login(loginResponse); // Giả sử bạn có auth context
+        // Lưu token vào localStorage
+        localStorage.setItem('authToken', loginResponse.token);
         navigate("/profile");
       } catch (e) {
         bag.setErrors({
