@@ -120,7 +120,7 @@ function Signup({ history }) {
         <Box textAlign="center" mt={4}>
           <Text fontSize="sm" color="gray.500">
             Bạn đã có tài khoản?{" "}
-            <Link as={RouterLink} to="/login" color="red.500" fontWeight="bold">
+            <Link as={RouterLink} to="/Signin" color="red.500" fontWeight="bold">
               Đăng nhập
             </Link>
           </Text>
