@@ -14,6 +14,12 @@ import Orders from "./pages/Admin/Orders";
 import AdminProducts from "./pages/Admin/AdminProducts";
 import AdminProductDetail from "./pages/Admin/AdminProductDetail";
 import NewProduct from "./pages/Products/New";
+// Remove this line if SignupValidatin is unused
+// import SignupValidation from './pages/Auth/Signin/SignupValidation';
+
+
+
+
 
 function App() {
   return (
