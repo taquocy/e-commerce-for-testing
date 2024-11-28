@@ -14,6 +14,21 @@ import Orders from "./pages/Admin/Orders";
 import AdminProducts from "./pages/Admin/AdminProducts";
 import AdminProductDetail from "./pages/Admin/AdminProductDetail";
 import NewProduct from "./pages/Products/New";
+// Remove this line if SignupValidatin is unused
+// import SignupValidation from './pages/Auth/Signin/SignupValidation';
+
+
+
+// import React from "react";
+// import { AuthProvider } from "./contexts/AuthContext";
+// import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+// import Signin from "./components/Signin";
+// import Profile from "./components/Profile";
+
+
+
+
+
 
 function App() {
   return (
@@ -38,6 +53,18 @@ function App() {
             </Route>
           </Route>
           <Route path="*" element={<Error404 />} />
+
+          {/* <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/login" element={<Signin />} />
+          <Route path="/profile" element={<Profile />} />
+        </Routes>
+      </Router>
+    </AuthProvider> */}
+
+
+
         </Routes>
       </div>
     </>

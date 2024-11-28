@@ -13,11 +13,30 @@ import {
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Logic xử lý gửi email reset mật khẩu
-    setSubmitted(true);
+    if (!isValidEmail(email)) {
+      setError("Invalid email address.");
+      return;
+    }
+    setError("");
+    setIsLoading(true);
+    setTimeout(() => {
+      const isSuccess = Math.random() > 0.3; // Giả lập xác suất thành công 70%
+      if (isSuccess) {
+        setSubmitted(true);
+      } else {
+        setError("Failed to send instructions. Please try again.");
+      }
+      setIsLoading(false);
+    }, 2000);
   };
 
   return (
@@ -27,9 +46,14 @@ function ForgotPassword() {
           <Heading>Forgot Password</Heading>
         </Box>
         {submitted ? (
-          <Alert status="success" mt={5}>
-            Instructions to reset your password have been sent to {email}.
-          </Alert>
+          <Box>
+            <Alert status="success" mt={5}>
+              Instructions to reset your password have been sent to {email}.
+            </Alert>
+            <Button mt={4} onClick={() => setSubmitted(false)} colorScheme="teal">
+              Reset
+            </Button>
+          </Box>
         ) : (
           <Box my={5} textAlign="left">
             <form onSubmit={handleSubmit}>
@@ -43,7 +67,18 @@ function ForgotPassword() {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </FormControl>
-              <Button mt="4" width="full" type="submit" colorScheme="teal">
+              {error && (
+                <Alert status="error" mt={3}>
+                  {error}
+                </Alert>
+              )}
+              <Button
+                mt="4"
+                width="full"
+                type="submit"
+                colorScheme="teal"
+                isLoading={isLoading}
+              >
                 Send Instructions
               </Button>
             </form>
