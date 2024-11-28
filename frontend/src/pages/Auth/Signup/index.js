@@ -9,11 +9,13 @@ import {
   Button,
   Alert,
   Text,
+  Link,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import validationSchema from "./validations";
 import { fetcRegister } from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
+import { Link as RouterLink } from "react-router-dom"; // For routing
 
 function Signup({ history }) {
   const { login } = useAuth();
@@ -113,6 +115,15 @@ function Signup({ history }) {
               Sign Up
             </Button>
           </form>
+        </Box>
+        {/* Link to Login */}
+        <Box textAlign="center" mt={4}>
+          <Text fontSize="sm" color="gray.500">
+            Bạn đã có tài khoản?{" "}
+            <Link as={RouterLink} to="/login" color="red.500" fontWeight="bold">
+              Đăng nhập
+            </Link>
+          </Text>
         </Box>
       </Box>
     </Flex>
