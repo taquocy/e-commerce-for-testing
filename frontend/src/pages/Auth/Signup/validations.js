@@ -4,7 +4,7 @@ const validations = yup.object().shape({
   email: yup.string().email("Nhập email hợp lệ").required("Bắt buộc"),
   password: yup
     .string()
-    .min(6, "Password must be at least 10 characters long.")
+    .min(6, "Password must be at least 6 characters long.")
     .required(),
   passwordConfirm: yup
     .string()
