@@ -8,6 +8,7 @@ import {
   Input,
   Button,
   Alert,
+  Text,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import validationSchema from "./validations";
@@ -33,70 +34,88 @@ function Signup({ history }) {
         login(registerResponse);
         history.push("/profile");
       } catch (e) {
-        bag.setErrors({ general: e.response.data.message });
+        bag.setErrors({ general: e.response?.data?.message || "Đã xảy ra lỗi." });
       }
     },
   });
+
   return (
-    <div>
-      <Flex align="center" width="full" justifyContent="center">
-        <Box pt={10}>
-          <Box textAlign="center">
-            <Heading>Signup</Heading>
-          </Box>
-          <Box my={5}>
-            {formik.errors.general && (
-              <Alert status="error">{formik.errors.general}</Alert>
-            )}
-          </Box>
-          <Box my={5} textAlign="left">
-            <form onSubmit={formik.handleSubmit}>
-              <FormControl>
-                <FormLabel>E-mail</FormLabel>
-                <Input
-                  name="email"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.email}
-                  isInvalid={formik.touched.email && formik.errors.email}
-                />
-              </FormControl>
-
-              <FormControl mt="4">
-                <FormLabel>Password</FormLabel>
-                <Input
-                  name="password"
-                  type="password"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.password}
-                  isInvalid={formik.touched.password && formik.errors.password}
-                />
-              </FormControl>
-
-              <FormControl mt="4">
-                <FormLabel>Password Confirm</FormLabel>
-                <Input
-                  name="passwordConfirm"
-                  type="password"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.passwordConfirm}
-                  isInvalid={
-                    formik.touched.passwordConfirm &&
-                    formik.errors.passwordConfirm
-                  }
-                />
-              </FormControl>
-
-              <Button mt="4" width="full" type="submit">
-                Sign Up
-              </Button>
-            </form>
-          </Box>
+    <Flex align="center" width="full" justifyContent="center">
+      <Box pt={10}>
+        <Box textAlign="center">
+          <Heading>Signup</Heading>
         </Box>
-      </Flex>
-    </div>
+        <Box my={5}>
+          {formik.errors.general && (
+            <Alert status="error">{formik.errors.general}</Alert>
+          )}
+        </Box>
+        <Box my={5} textAlign="left">
+          <form onSubmit={formik.handleSubmit}>
+            {/* Email Field */}
+            <FormControl isInvalid={formik.touched.email && !!formik.errors.email}>
+              <FormLabel>E-mail</FormLabel>
+              <Input
+                name="email"
+                type="email"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+              />
+              {formik.touched.email && formik.errors.email && (
+                <Text color="red.500" fontSize="sm">{formik.errors.email}</Text>
+              )}
+            </FormControl>
+
+            {/* Password Field */}
+            <FormControl
+              mt="4"
+              isInvalid={formik.touched.password && !!formik.errors.password}
+            >
+              <FormLabel>Password</FormLabel>
+              <Input
+                name="password"
+                type="password"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+              />
+              {formik.touched.password && formik.errors.password && (
+                <Text color="red.500" fontSize="sm">{formik.errors.password}</Text>
+              )}
+            </FormControl>
+
+            {/* Password Confirm Field */}
+            <FormControl
+              mt="4"
+              isInvalid={formik.touched.passwordConfirm && !!formik.errors.passwordConfirm}
+            >
+              <FormLabel>Password Confirm</FormLabel>
+              <Input
+                name="passwordConfirm"
+                type="password"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.passwordConfirm}
+              />
+              {formik.touched.passwordConfirm && formik.errors.passwordConfirm && (
+                <Text color="red.500" fontSize="sm">{formik.errors.passwordConfirm}</Text>
+              )}
+            </FormControl>
+
+            {/* Submit Button */}
+            <Button
+              mt="4"
+              width="full"
+              type="submit"
+              isLoading={formik.isSubmitting}
+            >
+              Sign Up
+            </Button>
+          </form>
+        </Box>
+      </Box>
+    </Flex>
   );
 }
 
