@@ -21,15 +21,29 @@ function NewProduct() {
     onSuccess: () => queryClient.invalidateQueries("admin:products"),
   });
 
-  const handleSubmit = async (values, bag) => {
+  const handleSubmit = async (values) => {
     console.log(values);
     message.loading({ content: "Loading...", key: "product_update" });
-
+  
+    // Kiểm tra và lọc các URL hợp lệ
+    const validPhotos = values.photos.filter((photo) =>
+      /(https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp))/i.test(photo)
+    );
+  
+    if (validPhotos.length === 0) {
+      message.error({
+        content: "You must provide at least one valid photo URL",
+        key: "product_update",
+        duration: 2,
+      });
+      return; // Dừng việc gửi dữ liệu nếu không có ảnh hợp lệ
+    }
+  
     const newValues = {
       ...values,
-      photos: JSON.stringify(values.photos),
+      photos: JSON.stringify(validPhotos),
     };
-
+  
     newProductMutation.mutate(newValues, {
       onSuccess: () => {
         message.success({
@@ -38,8 +52,16 @@ function NewProduct() {
           duration: 2,
         });
       },
+      onError: () => {
+        message.error({
+          content: "There was an error adding the product",
+          key: "product_update",
+          duration: 2,
+        });
+      },
     });
   };
+  
 
   return (
     <div>
@@ -117,6 +139,7 @@ function NewProduct() {
                       <FormLabel>Price</FormLabel>
                       <Input
                         name="price"
+                         type="number"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         value={values.price}
@@ -144,7 +167,13 @@ function NewProduct() {
                                     disabled={isSubmitting}
                                     onChange={handleChange}
                                     width="90%"
+                                    isInvalid={touched.photos?.[index] && errors.photos?.[index]}
                                   />
+                                  {touched.photos?.[index] && errors.photos?.[index] && (
+                                    <Text mt={2} color="red.500">
+                                      {errors.photos[index]}
+                                    </Text>
+                                  )}
                                   <Button
                                     ml="4"
                                     type="button"
@@ -155,15 +184,13 @@ function NewProduct() {
                                   </Button>
                                 </div>
                               ))}
-                            <Button
-                              mt="5"
-                              onClick={() => arrayHelpers.push("")}
-                            >
+                            <Button mt="5" onClick={() => arrayHelpers.push("")}>
                               Add a Photo
                             </Button>
                           </div>
                         )}
                       />
+
                     </FormControl>
                     <Button
                       mt={4}
