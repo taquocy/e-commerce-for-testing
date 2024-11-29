@@ -108,3 +108,18 @@ export const updateProduct = async (input, product_id) => {
 
   return data;
 };
+
+export const fetchChatMessages = async () => {
+  const { data } = await axios.get(
+    `${process.env.REACT_APP_BASE_ENDPOINT}/chat/messages`
+  );
+  return data;
+};
+
+export const sendChatMessage = async (message) => {
+  const { data } = await axios.post(
+    `${process.env.REACT_APP_BASE_ENDPOINT}/chat/messages`,
+    { message }
+  );
+  return data;
+};
