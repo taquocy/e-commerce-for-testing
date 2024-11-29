@@ -8,18 +8,46 @@ import {
   Td,
   TableCaption,
   Text,
+  Button,
+  Input,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "../style.css";
-import { useQuery } from "react-query";
-import { fetchOrders } from "../../../api";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import { fetchOrders, updateOrder } from "../../../api";
 
 function Orders() {
+  const queryClient = useQueryClient();
   const { isLoading, isError, data, error } = useQuery(
     "admin:orders",
     fetchOrders
   );
+
+  const updateOrderMutation = useMutation(updateOrder, {
+    onSuccess: () => queryClient.invalidateQueries("admin:orders"),
+  });
+
+  const [editingOrderId, setEditingOrderId] = useState(null);
+  const [updatedAddress, setUpdatedAddress] = useState("");
+
+  const handleEditClick = (orderId, currentAddress) => {
+    setEditingOrderId(orderId);
+    setUpdatedAddress(currentAddress);
+  };
+
+  const handleSaveClick = (orderId) => {
+    updateOrderMutation.mutate(
+      { address: updatedAddress },
+      {
+        onSuccess: () => {
+          setEditingOrderId(null);
+          setUpdatedAddress("");
+        },
+      }
+    );
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -54,6 +82,7 @@ function Orders() {
               <Th>Users</Th>
               <Th>Address</Th>
               <Th>Items</Th>
+              <Th>Actions</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -64,8 +93,34 @@ function Orders() {
                 ) : (
                   <Td>{item.user.email}</Td>
                 )}
-                <Td>{item.adress}</Td>
+                <Td>
+                  {editingOrderId === item._id ? (
+                    <Input
+                      value={updatedAddress}
+                      onChange={(e) => setUpdatedAddress(e.target.value)}
+                    />
+                  ) : (
+                    item.adress
+                  )}
+                </Td>
                 <Td isNumeric>{item.items.length}</Td>
+                <Td>
+                  {editingOrderId === item._id ? (
+                    <Button
+                      colorScheme="teal"
+                      onClick={() => handleSaveClick(item._id)}
+                    >
+                      Save
+                    </Button>
+                  ) : (
+                    <Button
+                      colorScheme="teal"
+                      onClick={() => handleEditClick(item._id, item.adress)}
+                    >
+                      Edit
+                    </Button>
+                  )}
+                </Td>
               </Tr>
             ))}
           </Tbody>

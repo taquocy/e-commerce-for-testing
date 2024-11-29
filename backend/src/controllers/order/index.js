@@ -51,8 +51,32 @@ const GetMyOrders = async (req, res, next) => {
   }
 };
 
+const Update = async (req, res, next) => {
+  const { orderId } = req.params;
+  const input = req.body;
+
+  const { error } = OrderSchema.validate(input);
+
+  if (error) {
+    return next(Boom.badRequest(error.details[0].message));
+  }
+
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, input, { new: true });
+
+    if (!updatedOrder) {
+      return next(Boom.notFound('Order not found'));
+    }
+
+    res.json(updatedOrder);
+  } catch (e) {
+    next(e);
+  }
+};
+
 export default {
   Create,
   List,
   GetMyOrders,
+  Update,
 };
