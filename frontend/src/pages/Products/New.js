@@ -1,5 +1,6 @@
 import React from "react";
 import { postProduct } from "../../api";
+import * as Yup from 'yup';
 import { useMutation, useQueryClient } from "react-query";
 import {
   Box,
@@ -19,6 +20,18 @@ function NewProduct() {
   const queryClient = useQueryClient();
   const newProductMutation = useMutation(postProduct, {
     onSuccess: () => queryClient.invalidateQueries("admin:products"),
+  });
+
+  const validationSchema = Yup.object().shape({
+    title: Yup.string().required("Title is required"),
+    description: Yup.string()
+      .min(5, "Description must be at least 5 characters")
+      .required("Description is required"),
+    price: Yup.number()
+      .moreThan(0, "Price must be greater than 0")
+      .max(999999999, "Price must not exceed 9 digits")
+      .required("Price is required"),
+    photos: Yup.array().of(Yup.string().url("Must be a valid URL")),
   });
 
   const handleSubmit = async (values, bag) => {
@@ -185,3 +198,4 @@ function NewProduct() {
 }
 
 export default NewProduct;
+
