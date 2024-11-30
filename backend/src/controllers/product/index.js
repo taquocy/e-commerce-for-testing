@@ -70,7 +70,7 @@ const Delete = async (req, res, next) => {
 
 const limit = 12;
 const GetList = async (req, res, next) => {
-  let { page } = req.query;
+  let { page, title, price } = req.query;
 
   if (page < 1) {
     page = 1;
@@ -78,8 +78,16 @@ const GetList = async (req, res, next) => {
 
   const skip = (parseInt(page) - 1) * limit;
 
+  const filter = {};
+  if (title) {
+    filter.title = { $regex: title, $options: "i" };
+  }
+  if (price) {
+    filter.price = price;
+  }
+
   try {
-    const products = await Product.find({})
+    const products = await Product.find(filter)
       .sort({ createdAt: -1 })
       .skip(skip)
       .limit(limit);
