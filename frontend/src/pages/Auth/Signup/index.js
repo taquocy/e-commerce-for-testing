@@ -8,6 +8,7 @@ import {
   Input,
   Button,
   Alert,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import validationSchema from "./validations";
@@ -38,7 +39,8 @@ function Signup() {
         // Chuyển hướng sang trang đăng nhập
         navigate("/signin");
       } catch (e) {
-        bag.setErrors({ general: e.response?.data?.message || "Lỗi xảy ra" });
+        const errorMessage = e.response?.data?.message || "Đã xảy ra lỗi.";
+        bag.setErrors({ general: errorMessage });
       }
     },
   });
@@ -48,27 +50,29 @@ function Signup() {
       <Flex align="center" width="full" justifyContent="center">
         <Box pt={10}>
           <Box textAlign="center">
-            <Heading>Sign  upp</Heading>
+            <Heading>Sign Up</Heading>
           </Box>
           <Box my={5}>
             {formik.errors.general && (
-              <Alert status="error">{formik.errors.general}</Alert>
+              <Alert status="error" mb={5}>
+                {formik.errors.general}
+              </Alert>
             )}
           </Box>
           <Box my={5} textAlign="left">
             <form onSubmit={formik.handleSubmit}>
-              <FormControl>
+              <FormControl isInvalid={formik.touched.email && formik.errors.email}>
                 <FormLabel>E-mail</FormLabel>
                 <Input
                   name="email"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
-                  isInvalid={formik.touched.email && formik.errors.email}
                 />
+                <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
               </FormControl>
 
-              <FormControl mt="4">
+              <FormControl mt="4" isInvalid={formik.touched.password && formik.errors.password}>
                 <FormLabel>Password</FormLabel>
                 <Input
                   name="password"
@@ -76,11 +80,14 @@ function Signup() {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
-                  isInvalid={formik.touched.password && formik.errors.password}
                 />
+                <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
               </FormControl>
 
-              <FormControl mt="4">
+              <FormControl
+                mt="4"
+                isInvalid={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
+              >
                 <FormLabel>Password Confirm</FormLabel>
                 <Input
                   name="passwordConfirm"
@@ -88,14 +95,11 @@ function Signup() {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.passwordConfirm}
-                  isInvalid={
-                    formik.touched.passwordConfirm &&
-                    formik.errors.passwordConfirm
-                  }
                 />
+                <FormErrorMessage>{formik.errors.passwordConfirm}</FormErrorMessage>
               </FormControl>
 
-              <Button mt="4" width="full" type="submit">
+              <Button mt="4" width="full" type="submit" colorScheme="teal">
                 Sign Up
               </Button>
             </form>

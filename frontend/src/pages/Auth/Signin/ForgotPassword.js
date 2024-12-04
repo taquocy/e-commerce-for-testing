@@ -16,7 +16,6 @@ function ForgotPassword() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Logic xử lý gửi email reset mật khẩu
     setSubmitted(true);
   };
 
