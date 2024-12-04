@@ -46,6 +46,20 @@ function ForgotPassword() {
                 Send Instructions
               </Button>
             </form>
+            <Box mt={5} textAlign="center">
+          <p fontSize="lg" fontWeight="bold">
+            Cần hỗ trợ?
+          </p>
+          <p mt={2}>
+            Nếu bạn gặp vấn đề về tài khoản, hãy liên hệ admin hoặc đội hỗ trợ
+          </p>
+          <p mt={2} color="blue.500" fontWeight="semibold">
+            Hotline: <a href="tel:+1234567890">+1 (234) 567-890</a>
+          </p>
+          <p mt={2} color="blue.500" fontWeight="semibold">
+            Email: <a href="mailto:support@example.com">support@example.com</a>
+          </p>
+        </Box>
           </Box>
         )}
       </Box>
