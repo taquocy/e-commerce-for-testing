@@ -14,6 +14,9 @@ import Orders from "./pages/Admin/Orders";
 import AdminProducts from "./pages/Admin/AdminProducts";
 import AdminProductDetail from "./pages/Admin/AdminProductDetail";
 import NewProduct from "./pages/Products/New";
+import ResetPassword from "./pages/Auth/Signin/ResetPassword";
+
+
 
 function App() {
   return (
@@ -26,6 +29,7 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} /> {/* Thêm Forgot Password */}
+          <Route path="/auth/reset-password/:token" component={ResetPassword} />
           <Route path="/basket" element={<Basket />} />
           <Route path="/profile" element={<ProductedProfile />} />
           <Route path="/admin">
