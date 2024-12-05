@@ -19,7 +19,8 @@ import { useFormik } from "formik";
 import validationSchema from "./validations";
 import { fetchLogin } from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
-import { Navigate, Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
+import "./Spin.css"; // Add a CSS file for spinning animation
 
 function Signin({ history }) {
   const { login } = useAuth();
@@ -44,7 +45,7 @@ function Signin({ history }) {
           email: values.email,
           password: values.password,
         });
-        alert("Đăng nhập thành công")
+        alert("Đăng nhập thành công");
         login(loginResponse);
         history.push("/");  
       } catch (e) {
@@ -52,6 +53,14 @@ function Signin({ history }) {
       }
     },
   });
+
+  const [speed, setSpeed] = useState("normal");
+
+  const handleSpeedChange = (mode) => {
+    if (mode === 1) setSpeed("slow");
+    else if (mode === 2) setSpeed("normal");
+    else if (mode === 3) setSpeed("fast");
+  };
 
   return (
     <Flex
@@ -139,6 +148,36 @@ function Signin({ history }) {
             Sign In
           </Button>
         </form>
+
+        <Box textAlign="center" mt="8">
+          <Heading as="h2" size="md" mb="4">
+            Thấy nóng không? bật quạt nhé?
+          </Heading>
+          <Box
+            className={`spinner ${speed}`}
+            bgImage={
+              "https://is1-ssl.mzstatic.com/image/thumb/Purple128/v4/eb/43/eb/eb43ebe4-20c7-8ba5-6e7f-753a385c3e64/source/512x512bb.jpg"
+            }
+            bgSize="cover"
+            bgPosition="center"
+            w="100px"
+            h="100px"
+            borderRadius="full"
+            mx="auto"
+          ></Box>
+          <Flex justify="center" mt="4" gap="4">
+            <Button colorScheme="teal" size="sm" onClick={() => handleSpeedChange(1)}>
+              Mode 1 (Chậm)
+            </Button>
+            <Button colorScheme="teal" size="sm" onClick={() => handleSpeedChange(2)}>
+              Mode 2 (Vừa)
+            </Button>
+            <Button colorScheme="teal" size="sm" onClick={() => handleSpeedChange(3)}>
+              Mode 3 (Nhanh)
+            </Button>
+          </Flex>
+        </Box>
+
         <Box mt={5} textAlign="center">
           <p fontSize="lg" fontWeight="bold">
             Cần hỗ trợ?
@@ -152,10 +191,8 @@ function Signin({ history }) {
           <p mt={2} color="blue.500" fontWeight="semibold">
             Email: <a href="mailto:support@example.com">support@example.com</a>
           </p>
+        </Box>
       </Box>
-          </Box>
-          
-      
     </Flex>
   );
 }
