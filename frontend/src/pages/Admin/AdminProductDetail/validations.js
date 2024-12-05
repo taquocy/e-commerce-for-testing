@@ -23,7 +23,12 @@ const validationSchema = yup.object().shape({
         )
         .required("Photo URL is required")
     )
-    .required("Photos field is required"),
+    .min(1, "At least one photo is required")
+    .max(10, "You can upload up to 10 photos"),
+  status: yup
+    .string()
+    .oneOf(["Active", "Inactive"], "Status must be either 'Active' or 'Inactive'")
+    .required("Status is required"),
 });
 
 export default validationSchema;
