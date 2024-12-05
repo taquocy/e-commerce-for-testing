@@ -22,6 +22,12 @@ function NewProduct() {
   });
 
   const handleSubmit = async (values, bag) => {
+    // Kiểm tra giá trị âm trước khi gửi dữ liệu
+    if (values.price < 0) {
+      message.error("Giá không thể là giá trị âm.");
+      return;
+    }
+
     console.log(values);
     message.loading({ content: "Loading...", key: "product_update" });
 
@@ -121,7 +127,7 @@ function NewProduct() {
                         onBlur={handleBlur}
                         value={values.price}
                         disabled={isSubmitting}
-                        isInvalid={touched.description && errors.description}
+                        isInvalid={touched.price && errors.price}
                       />
                       {touched.price && errors.price && (
                         <Text mt={2} color="red.500">
@@ -185,3 +191,4 @@ function NewProduct() {
 }
 
 export default NewProduct;
+  
