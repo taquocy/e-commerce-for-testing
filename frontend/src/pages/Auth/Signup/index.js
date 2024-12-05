@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Flex, Box, Heading, FormControl, FormLabel, Input, Button, Alert, Text, Link } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import validationSchema from "./validations";
@@ -9,6 +9,7 @@ import "./Signup.css"; // Import CSS
 
 function Signup({ history }) {
   const { login } = useAuth();
+  const [successMessage, setSuccessMessage] = useState(""); // State để lưu thông báo thành công
 
   const formik = useFormik({
     initialValues: {
@@ -23,10 +24,15 @@ function Signup({ history }) {
           email: values.email,
           password: values.password,
         });
+
+        // Lưu trạng thái đăng nhập và chuyển trang
         login(registerResponse);
-        history.push("/profile");
+        setSuccessMessage("Đăng ký thành công! Bạn đang được chuyển hướng..."); // Thông báo thành công
+        setTimeout(() => history.push("/profile"), 2000); // Chuyển hướng sau 2 giây
       } catch (e) {
-        bag.setErrors({ general: e.response?.data?.message || "Đã xảy ra lỗi." });
+        // Xử lý lỗi chi tiết hơn
+        const errorMessage = e.response?.data?.message || "Đã xảy ra lỗi.";
+        bag.setErrors({ general: errorMessage });
       }
     },
   });
@@ -35,10 +41,23 @@ function Signup({ history }) {
     <div className="signup-container">
       <div className="signup-box">
         <h1 className="signup-heading">Signup</h1>
-        {formik.errors.general && (
-          <div className="signup-alert">{formik.errors.general}</div>
+
+        {/* Thông báo thành công */}
+        {successMessage && (
+          <Alert status="success" mt="4" mb="4" borderRadius="md">
+            {successMessage}
+          </Alert>
         )}
+
+        {/* Thông báo lỗi chung */}
+        {formik.errors.general && (
+          <Alert status="error" mt="4" mb="4" borderRadius="md">
+            {formik.errors.general}
+          </Alert>
+        )}
+
         <form className="signup-form" onSubmit={formik.handleSubmit}>
+          {/* Email */}
           <FormControl isInvalid={formik.touched.email && !!formik.errors.email}>
             <FormLabel>E-mail</FormLabel>
             <Input
@@ -53,6 +72,7 @@ function Signup({ history }) {
             )}
           </FormControl>
 
+          {/* Mật khẩu */}
           <FormControl isInvalid={formik.touched.password && !!formik.errors.password}>
             <FormLabel>Password</FormLabel>
             <Input
@@ -67,6 +87,7 @@ function Signup({ history }) {
             )}
           </FormControl>
 
+          {/* Xác nhận mật khẩu */}
           <FormControl isInvalid={formik.touched.passwordConfirm && !!formik.errors.passwordConfirm}>
             <FormLabel>Password Confirm</FormLabel>
             <Input
@@ -81,10 +102,13 @@ function Signup({ history }) {
             )}
           </FormControl>
 
+          {/* Nút đăng ký */}
           <Button className="signup-button" mt="4" width="full" type="submit" isLoading={formik.isSubmitting}>
             Sign Up
           </Button>
         </form>
+
+        {/* Đường dẫn đến đăng nhập */}
         <div className="signup-link">
           <Text fontSize="sm" color="gray.500">
             Bạn đã có tài khoản?{" "}
