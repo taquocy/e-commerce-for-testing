@@ -53,11 +53,11 @@ function Signin({ history }) {
   });
 
   return (
-    <div>
-      <Flex align="center" width="full" justifyContent="center">
-        <Box pt={10}>
+    <div style={{ display: "flex", justifyContent: "center" }}>
+      <Flex align="center" width="full" justifyContent="center" boxShadow="rgba(0, 0, 0, 0.24) 0px 3px 8px" width="300px">
+        <Box pt={10} width="250px">
           <Box textAlign="center">
-            <Heading>Sign In</Heading>
+            <Heading >Sign In</Heading>
           </Box>
           <Box my={5}>
             {formik.errors.general && (
