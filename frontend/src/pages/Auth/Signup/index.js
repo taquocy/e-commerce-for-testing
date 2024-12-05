@@ -27,8 +27,7 @@ function Signup({ history }) {
 
         // Lưu trạng thái đăng nhập và chuyển trang
         login(registerResponse);
-        setSuccessMessage("Đăng ký thành công! Bạn đang được chuyển hướng..."); // Thông báo thành công
-        setTimeout(() => history.push("/profile"), 2000); // Chuyển hướng sau 2 giây
+        setSuccessMessage("Đăng ký thành công!"); // Thông báo thành công
       } catch (e) {
         // Xử lý lỗi chi tiết hơn
         const errorMessage = e.response?.data?.message || "Đã xảy ra lỗi.";
