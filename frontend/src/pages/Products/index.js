@@ -27,7 +27,6 @@ function Products() {
   if (status === "loading") return "Loading...";
 
   if (status === "error") return "An error has occurred: " + error.message;
-
   return (
     <div>
       <div className="products">
