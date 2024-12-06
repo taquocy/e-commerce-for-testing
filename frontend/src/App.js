@@ -14,7 +14,7 @@ import Orders from "./pages/Admin/Orders";
 import AdminProducts from "./pages/Admin/AdminProducts";
 import AdminProductDetail from "./pages/Admin/AdminProductDetail";
 import NewProduct from "./pages/Products/New";
-
+import SearchResults from "./components/Navbar/SearchResults";
 function App() {
   return (
     <>
@@ -23,6 +23,7 @@ function App() {
         <Routes>
           <Route path="/" exect index element={<Products />} />
           <Route path="/product/:product_id" element={<ProductDetail />} />
+          <Route path="/search" element={<SearchResults />} /> {/* Đảm bảo có dòng này */}
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} /> {/* Thêm Forgot Password */}

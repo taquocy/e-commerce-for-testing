@@ -1,13 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./style.module.css";
-import { Link } from "react-router-dom";
-import { Button } from "@chakra-ui/react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button, Input, Flex } from "@chakra-ui/react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useBasket } from "../../contexts/BasketContext";
 
 function Navbar() {
   const { loggedIn, user } = useAuth();
   const { items } = useBasket();
+  const [searchTerm, setSearchTerm] = useState(""); // Trạng thái lưu từ khóa tìm kiếm
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    if (searchTerm.trim() !== "") {
+      navigate(`/search?query=${searchTerm}`); // Chuyển hướng đến trang kết quả tìm kiếm
+    }
+  };
 
   return (
     <nav className={styles.nav}>
@@ -20,6 +28,21 @@ function Navbar() {
             <Link to="/">Products</Link>
           </li>
         </ul>
+      </div>
+      <div className={styles.center}>
+        {/* Thanh tìm kiếm */}
+        <Flex>
+          <Input
+            placeholder="Tìm kiếm sản phẩm..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            width="300px"
+            mr="2"
+          />
+          <Button colorScheme="blue" onClick={handleSearch}>
+            Tìm kiếm
+          </Button>
+        </Flex>
       </div>
       <div className={styles.right}>
         {!loggedIn && (
