@@ -1,16 +1,57 @@
 import Boom from "boom";
 import User from "../../models/user";
-
-// helpers
-import {
-	signAccessToken,
-	signRefreshToken,
-	verifyRefreshToken,
-} from "../../helpers/jwt";
-
-// validations
+import { OAuth2Client } from "google-auth-library";
+import { signAccessToken, signRefreshToken, verifyRefreshToken } from "../../helpers/jwt";
 import ValidationSchema from "./validations";
+const client = new OAuth2Client('290524274843-3kcf9c3gk5cku9608embdd0ickj9c3ul.apps.googleusercontent.com');
 
+const GoogleLogin = async (req, res, next) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return next(Boom.badRequest('Google token is required.'));
+  }
+
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: '290524274843-3kcf9c3gk5cku9608embdd0ickj9c3ul.apps.googleusercontent.com', // Google Client ID
+    });
+
+    const payload = ticket.getPayload();
+    const email = payload.email;
+
+    let user = await User.findOne({ email });
+
+    if (!user) {
+      user = new User({
+        email,
+        username: payload.name,
+        googleId: payload.sub,
+      });
+      await user.save();
+    }
+
+    const accessToken = await signAccessToken({
+      user_id: user._id,
+      role: user.role,
+    });
+    const refreshToken = await signRefreshToken(user._id);
+
+    res.json({
+      user: {
+        _id: user._id,
+        email: user.email,
+        username: user.username,
+      },
+      accessToken,
+      refreshToken,
+    });
+  } catch (error) {
+    console.error('Error during Google Login:', error);
+    return next(Boom.unauthorized('Invalid Google token.'));
+  }
+};
 
 const Register = async (req, res, next) => {
 	const input = req.body;
