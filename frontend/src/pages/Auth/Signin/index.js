@@ -95,7 +95,7 @@ function Signin({ history }) {
                 </FormLabel>
                 <InputGroup>
                   <Input
-                    name="password"
+                    name="passworda"
                     type={showPassword ? "text" : "password"}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
