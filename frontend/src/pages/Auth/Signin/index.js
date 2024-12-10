@@ -68,7 +68,7 @@ function Signin({ history }) {
             <form onSubmit={formik.handleSubmit}>
               <FormControl isInvalid={formik.touched.email && formik.errors.email}>
                 <FormLabel>
-                  E-mail
+                  Email
                   {showErrorIndicator && !formik.values.email && (
                     <Text as="span" color="red.500">
                       *
