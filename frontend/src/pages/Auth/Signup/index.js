@@ -40,7 +40,7 @@ function Signup() {
       setIsLoading(false);
     },
     googleAccountConfigs: {
-      client_id: "YOUR_GOOGLE_CLIENT_ID",  // Replace with your actual client ID
+      client_id: "290524274843-3kcf9c3gk5cku9608embdd0ickj9c3ul.apps.googleusercontent.com",
     },
   });
 
