@@ -7,6 +7,8 @@ import {
   FormLabel,
   Input,
   Button,
+  useColorMode,
+  Text,
   Alert,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
@@ -16,6 +18,7 @@ import { useAuth } from "../../../contexts/AuthContext";
 
 function Signin({ history }) {
   const { login } = useAuth();
+  const { colorMode, toggleColorMode } = useColorMode();
 
   const formik = useFormik({
     initialValues: {
@@ -42,6 +45,9 @@ function Signin({ history }) {
         <Box pt={10}>
           <Box textAlign="center">
             <Heading>Sign In</Heading>
+            <Button mt={4} size="sm" onClick={toggleColorMode}>
+              Switch mode {colorMode === "light" ? "Dark" : "Light"}
+            </Button>
           </Box>
           <Box my={5}>
             {formik.errors.general && (
@@ -77,6 +83,9 @@ function Signin({ history }) {
                 Sign In
               </Button>
             </form>
+          </Box>
+          <Box textAlign="center" mt={4}>
+            <Text>Current mode: {colorMode === "light" ? "Light" : "Dark"}</Text>
           </Box>
         </Box>
       </Flex>
