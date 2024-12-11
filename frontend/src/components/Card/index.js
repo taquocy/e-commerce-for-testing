@@ -10,6 +10,7 @@ import {
   Divider,
   ButtonGroup,
   Button,
+  HStack,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -37,6 +38,23 @@ function Cards({ item }) {
           <Stack mt="6" spacing="3">
             <Heading size="md">{item.title}</Heading>
             <Text>{moment(item.createdAt).format("DD/MM/YYYY")}</Text>
+            <HStack spacing={2}>
+              {item.color && item.color.length > 0 ? (
+                item.color.map((color, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      width: 20,
+                      height: 20,
+                      borderRadius: "50%",
+                      backgroundColor: color,
+                    }}
+                  />
+                ))
+              ) : (
+                <Text> </Text>
+              )}
+            </HStack>  
             <Text color="blue.600" fontSize="2xl">
               {item.price}$
             </Text>
