@@ -4,10 +4,6 @@ const validations = yup.object().shape({
   email: yup
     .string()
     .email("Email không hợp lệ")
-    .matches(
-      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      "Email phải có định dạng hợp lệ (ví dụ: example@domain.com)"
-    )
     .required("Email là bắt buộc"),
 
   username: yup
@@ -18,11 +14,7 @@ const validations = yup.object().shape({
 
   password: yup
     .string()
-    .min(8, "Mật khẩu phải có ít nhất 8 ký tự.")
-    .matches(
-      /[!@#$%^&*(),.?":{}|<>]/,
-      "Mật khẩu phải chứa ít nhất một ký tự đặc biệt (ví dụ: @, #, !, ...)"
-    )
+    .min(5, "Mật khẩu phải có ít nhất 8 ký tự.")
     .required("Mật khẩu là bắt buộc"),
 
   passwordConfirm: yup
