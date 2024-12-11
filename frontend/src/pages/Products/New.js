@@ -154,7 +154,7 @@ function NewProduct() {
                             )}
                             <Button
                               mt="5"
-                              onClick={() => arrayHelpers.push("#ffffff")} // Default color when adding new color
+                              onClick={() => arrayHelpers.push("#ffffff")}
                             >
                               Add a Color
                             </Button>
@@ -162,7 +162,6 @@ function NewProduct() {
                         )}
                       />
                     </FormControl>
-
 
                     <FormControl mt={4}>
                       <FormLabel>Price</FormLabel>
