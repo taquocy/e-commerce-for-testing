@@ -229,7 +229,7 @@ function NewProduct() {
                       mt={5}
                       width="full"
                       onClick={() => window.location.href = '/admin'}
-                      colorScheme="red"
+                      colorScheme="gray"
                     >
                       Cancel
                     </Button>
