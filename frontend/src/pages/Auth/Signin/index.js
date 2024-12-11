@@ -51,7 +51,7 @@ function Signin({ history }) {
           <Box my={5} textAlign="left">
             <form onSubmit={formik.handleSubmit}>
               <FormControl>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Email <Box as="span" color="red">*</Box></FormLabel>
                 <Input
                   name="email"
                   onChange={formik.handleChange}
@@ -62,7 +62,7 @@ function Signin({ history }) {
               </FormControl>
 
               <FormControl mt="4">
-                <FormLabel>Password</FormLabel>
+                <FormLabel>Password <Box as="span" color="red">*</Box></FormLabel>
                 <Input
                   name="password"
                   type="password"
