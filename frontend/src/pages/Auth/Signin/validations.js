@@ -1,12 +1,11 @@
-import * as Yup from "yup";
+import * as yup from "yup";
 
-const validation = Yup.object({
-  email: Yup.string()
-    .email("Định dạng phải có '@' trong chuỗi")
-    .required("Bạn chưa nhập địa chỉ email"),
-  password: Yup.string()
-    .min(8, "Yêu cầu tối thiểu 8 ký tự") 
-    .required("Bạn chưa nhập mật khẩu"),
+const validations = yup.object().shape({
+  email: yup.string().email("Nhap Email hop le").required("Bat buoc"),
+  password: yup
+    .string()
+    // .min(10, "Parolanız en az 10 karakter olmalıdır.")
+    .required(),
 });
 
-export default validation;
+export default validations;

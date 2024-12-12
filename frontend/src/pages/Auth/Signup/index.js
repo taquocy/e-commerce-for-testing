@@ -12,10 +12,10 @@ import {
 import { useFormik } from "formik";
 import validationSchema from "./validations";
 import { fetcRegister } from "../../../api";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../contexts/AuthContext";
 
-function Signup() {
-  const navigate = useNavigate();
+function Signup({ history }) {
+  const { login } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -26,29 +26,23 @@ function Signup() {
     validationSchema,
     onSubmit: async (values, bag) => {
       try {
-        // Gửi yêu cầu đăng ký
-        await fetcRegister({
+        const registerResponse = await fetcRegister({
           email: values.email,
           password: values.password,
         });
-
-        // Hiển thị thông báo đăng ký thành công
-        alert("Đăng ký thành công!");
-
-        // Chuyển hướng sang trang đăng nhập
-        navigate("/signin");
+        login(registerResponse);
+        history.push("/profile");
       } catch (e) {
-        bag.setErrors({ general: e.response?.data?.message || "Lỗi xảy ra" });
+        bag.setErrors({ general: e.response.data.message });
       }
     },
   });
-
   return (
     <div>
       <Flex align="center" width="full" justifyContent="center">
         <Box pt={10}>
           <Box textAlign="center">
-            <Heading>Sign  upp</Heading>
+            <Heading>Signup</Heading>
           </Box>
           <Box my={5}>
             {formik.errors.general && (
