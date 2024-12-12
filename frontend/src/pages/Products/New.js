@@ -25,7 +25,7 @@ function NewProduct() {
   const handleSubmit = async (values, bag) => {
     console.log(values);
 
-    // Kiểm tra màu sắc trước khi gửi
+    // validate màu
     const validColors = values.color.filter(color => /^#[0-9A-Fa-f]{6}$/i.test(color));
 
     message.loading({ content: "Loading...", key: "product_update" });
@@ -33,7 +33,7 @@ function NewProduct() {
     const newValues = {
       ...values,
       photos: JSON.stringify(values.photos),
-      color: validColors,
+      color: validColors, // như trên
     };
 
     newProductMutation.mutate(newValues, {

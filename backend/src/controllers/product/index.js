@@ -11,7 +11,7 @@ const Create = async (req, res, next) => {
   }
 
   try {
-    // array convert về json
+    // string convert về array
     if (typeof input.color === 'string') {
       input.color = input.color.split(',').map(color => color.trim());
     }
