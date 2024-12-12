@@ -18,7 +18,8 @@ import {
   CardBody,
   CardFooter,
 } from "@chakra-ui/react";
-import { StarIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
+import { StarIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons"; // Đảm bảo import đúng
+
 import { useBasket } from "../../contexts/BasketContext";
 
 function ProductDetail() {
@@ -33,13 +34,14 @@ function ProductDetail() {
   const images = data?.photos.map((url) => ({ original: url }));
 
   // State for Chi Tiết Sản Phẩm
-  const [details, setDetails] = useState(() =>
-    JSON.parse(localStorage.getItem("productDetails")) || {
-      category: "Không có thông tin",
-      brand: "Không có thông tin",
-      origin: "Không có thông tin",
-      stock: "Không có thông tin",
-    }
+  const [details, setDetails] = useState(
+    () =>
+      JSON.parse(localStorage.getItem("productDetails")) || {
+        category: "Không có thông tin",
+        brand: "Không có thông tin",
+        origin: "Không có thông tin",
+        stock: "Không có thông tin",
+      }
   );
   const [editingDetails, setEditingDetails] = useState(false);
 
@@ -103,7 +105,11 @@ function ProductDetail() {
         </Text>
       </Box>
 
-      <Card direction={{ base: "column", sm: "row" }} overflow="hidden" variant="outline">
+      <Card
+        direction={{ base: "column", sm: "row" }}
+        overflow="hidden"
+        variant="outline"
+      >
         <ImageGallery items={images} showThumbnails={false} />
         <Stack>
           <CardBody>
