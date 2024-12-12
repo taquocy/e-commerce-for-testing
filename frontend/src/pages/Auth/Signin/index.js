@@ -66,14 +66,12 @@ function Signin({ history }) {
           </Box>
           <Box my={5} textAlign="left">
             <form onSubmit={formik.handleSubmit}>
-              <FormControl
-                isInvalid={formik.touched.email && formik.errors.email}
-              >
+              <FormControl isInvalid={formik.touched.email && formik.errors.email}>
                 <FormLabel>
-                  E-mail
+                  E-mail 
                   <Text as="span" color="red.500">
-                    *
-                  </Text>
+                      *
+                    </Text>
                   {showErrorIndicator && !formik.values.email}
                 </FormLabel>
                 <Input
@@ -85,16 +83,13 @@ function Signin({ history }) {
                 <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
               </FormControl>
 
-              <FormControl
-                mt="4"
-                isInvalid={formik.touched.password && formik.errors.password}
-              >
+              <FormControl mt="4" isInvalid={formik.touched.password && formik.errors.password}>
                 <FormLabel>
                   Password
                   <Text as="span" color="red.500">
-                    *
-                  </Text>
-                  {showErrorIndicator && !formik.values.password}
+                      *
+                    </Text>
+                  {showErrorIndicator && !formik.values.password }
                 </FormLabel>
                 <InputGroup>
                   <Input
