@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./index.css"; // Import CSS với tên chính xác
+import "./index.css"; // Import CSS
 import {
   Box,
   Heading,
@@ -14,6 +14,7 @@ import {
   InputRightElement,
   Link,
   Checkbox,
+  Flex,
 } from "@chakra-ui/react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useFormik } from "formik";
@@ -49,100 +50,98 @@ function Signin({ history }) {
         login(loginResponse);
         history.push("/profile");
       } catch (e) {
-        bag.setErrors({ general: e.response?.data?.message || "Lỗi không xác định" });
+        bag.setErrors({ general: e.response?.data?.message || "An error occurred" });
       }
     },
   });
 
   return (
-    <div className="container">
-      <Box className="signin-box">
+    <div className="signin-container">
+      <Box className="signin-box" boxShadow="lg" p="8" rounded="lg" bg="white">
         <Box className="signin-heading">
-          <Heading>Sign In</Heading>
+          <Heading size="lg" color="teal.600">
+            Welcome Back
+          </Heading>
+          <Text fontSize="sm" color="gray.500">
+            Sign in to your account
+          </Text>
         </Box>
+
         {formik.errors.general && (
-          <Box className="signin-alert">
+          <Box className="signin-alert" mt="4">
             <Alert status="error">{formik.errors.general}</Alert>
           </Box>
         )}
-        <Box className="signin-form">
-          <form onSubmit={formik.handleSubmit}>
-            {/* Email */}
-            <FormControl isInvalid={formik.touched.email && formik.errors.email}>
-              <FormLabel className="signin-label">Email</FormLabel>
+
+        <form onSubmit={formik.handleSubmit}>
+          {/* Email */}
+          <FormControl isInvalid={formik.touched.email && formik.errors.email} mb="4">
+            <FormLabel>Email</FormLabel>
+            <Input
+              name="email"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+              focusBorderColor="teal.400"
+            />
+            <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+          </FormControl>
+
+          {/* Password */}
+          <FormControl isInvalid={formik.touched.password && formik.errors.password} mb="4">
+            <FormLabel>Password</FormLabel>
+            <InputGroup>
               <Input
-                className="signin-input"
-                name="email"
+                name="password"
+                type={showPassword ? "text" : "password"}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                value={formik.values.email}
+                value={formik.values.password}
+                focusBorderColor="teal.400"
               />
-              <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
-            </FormControl>
+              <InputRightElement width="4.5rem">
+                <Button
+                  size="sm"
+                  onClick={() => setShowPassword(!showPassword)}
+                  variant="ghost"
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+            <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
+          </FormControl>
 
-            {/* Password */}
-            <FormControl mt="4" isInvalid={formik.touched.password && formik.errors.password}>
-              <FormLabel className="signin-label">Password</FormLabel>
-              <InputGroup>
-                <Input
-                  className="signin-input"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.password}
-                />
-                <InputRightElement width="4.5rem">
-                  <Button
-                    h="2rem"
-                    w="2rem"
-                    p={0}
-                    borderRadius="full"
-                    bg="gray.200"
-                    _hover={{ bg: "gray.300" }}
-                    _active={{ bg: "gray.400" }}
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? <FaEyeSlash /> : <FaEye />}
-                  </Button>
-                </InputRightElement>
-              </InputGroup>
-              <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
-            </FormControl>
-
-            {/* Remember Me */}
-            <FormControl mt="4" className="signin-checkbox">
-              <Checkbox
-                isChecked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-              >
-                Remember Me
-              </Checkbox>
-            </FormControl>
-
-            {/* Forgot Password */}
-            <Box className="signin-forgot">
+          {/* Remember Me & Forgot Password */}
+          <Flex justifyContent="space-between" alignItems="center" mb="4">
+            <Checkbox
+              isChecked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              colorScheme="teal"
+              className="signin-rememberme"
+            >
+              Remember Me
+            </Checkbox>
+            <Text fontSize="sm" className="signin-forgot">
               <Link as={RouterLink} to="/forgot-password" color="teal.500">
-                Quên mật khẩu?
+                Forgot Password?
               </Link>
-            </Box>
+            </Text>
+          </Flex>
 
-            {/* Sign Up */}
-            <Box className="signin-signup">
-              <Text>
-                Chưa có tài khoản?{" "}
-                <Link as={RouterLink} to="/signup" color="blue.500" fontWeight="bold">
-                  Đăng ký tại đây
-                </Link>
-              </Text>
-            </Box>
+          {/* Submit Button */}
+          <Button type="submit" colorScheme="teal" width="full" mb="4">
+            Sign In
+          </Button>
+        </form>
 
-            {/* Submit Button */}
-            <Button className="signin-button" type="submit">
-              Sign In
-            </Button>
-          </form>
-        </Box>
+        {/* Sign Up */}
+        <Text fontSize="sm" textAlign="center">
+          Don't have an account?{" "}
+          <Link as={RouterLink} to="/signup" color="teal.500" fontWeight="bold">
+            Sign Up
+          </Link>
+        </Text>
       </Box>
     </div>
   );
