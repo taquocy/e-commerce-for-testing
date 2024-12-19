@@ -211,4 +211,63 @@ describe("NewProduct Component", () => {
     const { asFragment } = render(<NewProduct />, { wrapper });
     expect(asFragment()).toMatchSnapshot(); // Lưu snapshot sau khi gửi form
   },10000);
+
+
+  // Test 1: Validation for Empty Color Field
+  test("shows validation errors for empty color field", async () => {
+    render(<NewProduct />, { wrapper });
+
+    const submitButton = screen.getByText("Add Product");
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(screen.getByText("Color is a required field")).toBeInTheDocument();
+    });
+  });
+
+  // Test 2: Validation for Invalid Color Format
+  test("shows validation error for invalid color format", async () => {
+    render(<NewProduct />, { wrapper });
+
+    // Type an invalid color code
+    await userEvent.type(screen.getByLabelText(/Color/i), "123456");
+
+    const submitButton = screen.getByText("Add Product");
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      expect(screen.getByText("Invalid color code")).toBeInTheDocument();
+    });
+  });
+
+  // Test 3: Accepts Valid Color Format
+  test("accepts valid color format", async () => {
+    render(<NewProduct />, { wrapper });
+
+    // Type a valid hex color code
+    await userEvent.type(screen.getByLabelText(/Color/i), "#ff5733");
+
+    const submitButton = screen.getByText("Add Product");
+    fireEvent.click(submitButton);
+
+    // Since the color is valid, no error message should appear
+    await waitFor(() => {
+      expect(screen.queryByText("Invalid color code")).not.toBeInTheDocument();
+    });
+  });
+
+  // Test 4: Color Field Style (Color Validation Shows Red for Error)
+  test("color field has red border on validation error", async () => {
+    render(<NewProduct />, { wrapper });
+
+    // Submit without entering color
+    const submitButton = screen.getByText("Add Product");
+    fireEvent.click(submitButton);
+
+    await waitFor(() => {
+      const colorInput = screen.getByLabelText(/Color/i);
+      expect(colorInput).toHaveStyle("border-color: red"); // Checks if the border turns red
+    });
+  });
+
 });

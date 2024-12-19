@@ -15,6 +15,10 @@ const ProductSchema = new Schema({
     required: true,
   },
   photos: [String],
+  color: {
+    type: [String],
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

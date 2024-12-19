@@ -10,6 +10,7 @@ import {
   Textarea,
   Button,
 } from "@chakra-ui/react";
+
 import { Link } from "react-router-dom";
 import { Formik, FieldArray } from "formik";
 import validationSchema from "./validations";
@@ -23,11 +24,16 @@ function NewProduct() {
 
   const handleSubmit = async (values, bag) => {
     console.log(values);
+
+    // validate màu
+    const validColors = values.color.filter(color => /^#[0-9A-Fa-f]{6}$/i.test(color));
+
     message.loading({ content: "Loading...", key: "product_update" });
 
     const newValues = {
       ...values,
       photos: JSON.stringify(values.photos),
+      color: validColors, // như trên
     };
 
     newProductMutation.mutate(newValues, {
@@ -64,6 +70,7 @@ function NewProduct() {
             description: "",
             price: "",
             photos: [],
+            color: [],
           }}
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
@@ -113,6 +120,49 @@ function NewProduct() {
                         </Text>
                       )}
                     </FormControl>
+                    
+                    {/* // Form thêm màu */}
+                    <FormControl mt={4}>
+                      <FormLabel>Color</FormLabel>
+                      <FieldArray
+                        name="color"
+                        render={(arrayHelpers) => (
+                          <div>
+                            {values.color && values.color.length > 0 ? (
+                              values.color.map((color, index) => (
+                                <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
+                                  <Input
+                                    type="color"
+                                    name={`color.${index}`}
+                                    value={color}
+                                    disabled={isSubmitting}
+                                    onChange={handleChange}
+                                    width="5%"
+                                  />
+                                  <Button
+                                    ml="4"
+                                    type="button"
+                                    colorScheme="red"
+                                    onClick={() => arrayHelpers.remove(index)}
+                                  >
+                                    Remove
+                                  </Button>
+                                </div>
+                              ))
+                            ) : (
+                              <Text> </Text>
+                            )}
+                            <Button
+                              mt="5"
+                              onClick={() => arrayHelpers.push("#ffffff")}
+                            >
+                              Add a Color
+                            </Button>
+                          </div>
+                        )}
+                      />
+                    </FormControl>
+
                     <FormControl mt={4}>
                       <FormLabel>Price</FormLabel>
                       <Input
@@ -170,8 +220,17 @@ function NewProduct() {
                       width="full"
                       type="submit"
                       isLoading={isSubmitting}
+                      colorScheme="red"
                     >
                       Add Product
+                    </Button>
+                    <Button
+                      mt={5}
+                      width="full"
+                      onClick={() => window.location.href = '/admin'}
+                      colorScheme="gray"
+                    >
+                      Cancel
                     </Button>
                   </form>
                 </Box>

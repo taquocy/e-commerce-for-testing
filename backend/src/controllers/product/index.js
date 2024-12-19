@@ -11,6 +11,11 @@ const Create = async (req, res, next) => {
   }
 
   try {
+    // string convert về array
+    if (typeof input.color === 'string') {
+      input.color = input.color.split(',').map(color => color.trim());
+    }
+
     input.photos = JSON.parse(input.photos);
 
     const product = new Product(input);
