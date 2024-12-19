@@ -139,6 +139,57 @@ const Me = async (req, res, next) => {
 	}
 };
 
+const changePassword = async (req, res) => {
+	const { oldPassword, newPassword } = req.body;
+	const userId = req.user.id;
+  
+	try {
+	  const user = await User.findById(userId);
+	  if (!user) {
+		return res.status(404).json({ message: 'Người dùng không tồn tại' });
+	  }
+  
+	  const isMatch = bcrypt.compareSync(oldPassword, user.password);
+	  if (!isMatch) {
+		return res.status(400).json({ message: 'Mật khẩu cũ không đúng' });
+	  }
+  
+	  user.password = bcrypt.hashSync(newPassword, 10);
+	  await user.save();
+  
+	  res.status(200).json({ message: 'Đổi mật khẩu thành công' });
+	} catch (error) {
+	  res.status(500).json({ message: 'Có lỗi xảy ra khi đổi mật khẩu' });
+	}
+  };
+  
+  app.put('/api/change-password', authenticate, changePassword);
+  
+
+const updateProfile = async (req, res) => {
+	const { email, name, password } = req.body;
+	const userId = req.user.id;
+  
+	try {
+	  const user = await User.findById(userId);
+	  if (!user) {
+		return res.status(404).json({ message: 'Người dùng không tồn tại' });
+	  }
+  
+	  if (email) user.email = email;
+	  if (name) user.name = name;
+	  if (password) user.password = bcrypt.hashSync(password, 10);
+  
+	  await user.save();
+	  res.status(200).json({ message: 'Cập nhật thông tin thành công' });
+	} catch (error) {
+	  res.status(500).json({ message: 'Có lỗi xảy ra khi cập nhật' });
+	}
+  };
+  
+  app.put('/api/profile', authenticate, updateProfile);
+  
+
 export default {
 	Register,
 	Login,
