@@ -38,7 +38,9 @@ function Signup() {
         // Chuyển hướng sang trang đăng nhập
         navigate("/signin");
       } catch (e) {
-        bag.setErrors({ general: e.response?.data?.message || "Lỗi xảy ra" });
+        // Xử lý lỗi nếu có
+        const errorMessage = e.response?.data?.message || "Lỗi xảy ra, vui lòng thử lại!";
+        bag.setErrors({ general: errorMessage });
       }
     },
   });
@@ -48,7 +50,7 @@ function Signup() {
       <Flex align="center" width="full" justifyContent="center">
         <Box pt={10}>
           <Box textAlign="center">
-            <Heading>Sign  upp</Heading>
+            <Heading>Sign Up</Heading>
           </Box>
           <Box my={5}>
             {formik.errors.general && (
