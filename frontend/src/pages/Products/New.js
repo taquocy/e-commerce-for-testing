@@ -117,11 +117,13 @@ function NewProduct() {
                       <FormLabel>Price*</FormLabel>
                       <Input
                         name="price"
-                        onChange={handleChange}
+                        onChange={(e) => {
+                          e.target.value = e.target.value.replace(/[^0-9]/g, "").slice(0.10);
+                        }}
                         onBlur={handleBlur}
                         value={values.price}
                         disabled={isSubmitting}
-                        isInvalid={touched.description && errors.description}
+                        isInvalid={touched.price && errors.price}
                       />
                       {touched.price && errors.price && (
                         <Text mt={2} color="red.500">
