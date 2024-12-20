@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Cards from "../../components/Card";
-import { Grid, Box, Flex, Button, Spinner, Skeleton } from "@chakra-ui/react";
+import { Grid, Box, Flex, Button, Spinner, Skeleton, Input } from "@chakra-ui/react";
 import { useInfiniteQuery } from "react-query";
 import { fetchProductList } from "../../api.js";
 
@@ -19,6 +19,19 @@ function Products() {
       return allGroups.length + 1;
     },
   });
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredData, setFilteredData] = useState([]);
+
+  useEffect(() => {
+    if (data) {
+      const allItems = data.pages.flat();
+      const filtered = allItems.filter((item) =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      setFilteredData(filtered);
+    }
+  }, [searchQuery, data]);
 
   // Infinite Scroll Implementation
   const observer = useRef();
@@ -47,27 +60,33 @@ function Products() {
 
   return (
     <div>
+      {/* Search Bar */}
+      <Flex mb={6} justifyContent="center">
+        <Input
+          placeholder="Search products..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          width="50%"
+        />
+      </Flex>
+
       <div className="products">
         <Grid templateColumns="repeat(3,1fr)" gap={4}>
-          {data.pages.map((group, i) => (
-            <React.Fragment key={i}>
-              {group.map((item, index) => {
-                if (group.length === index + 1) {
-                  return (
-                    <Box w="100%" key={item._id} ref={lastProductRef}>
-                      <Cards item={item} />
-                    </Box>
-                  );
-                } else {
-                  return (
-                    <Box w="100%" key={item._id}>
-                      <Cards item={item} />
-                    </Box>
-                  );
-                }
-              })}
-            </React.Fragment>
-          ))}
+          {(searchQuery ? filteredData : data.pages.flat()).map((item, index) => {
+            if ((searchQuery ? filteredData : data.pages.flat()).length === index + 1) {
+              return (
+                <Box w="100%" key={item._id} ref={lastProductRef}>
+                  <Cards item={item} />
+                </Box>
+              );
+            } else {
+              return (
+                <Box w="100%" key={item._id}>
+                  <Cards item={item} />
+                </Box>
+              );
+            }
+          })}
         </Grid>
       </div>
 
