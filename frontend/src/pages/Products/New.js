@@ -1,6 +1,7 @@
 import React from "react";
 import { postProduct } from "../../api";
 import { useMutation, useQueryClient } from "react-query";
+import './product.css';
 import {
   Box,
   FormControl,
@@ -9,36 +10,50 @@ import {
   Input,
   Textarea,
   Button,
+  Select,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
 import { Formik, FieldArray } from "formik";
 import validationSchema from "./validations";
 import { message } from "antd";
 
 function NewProduct() {
+  const navigate = useNavigate(); // Hook điều hướng
   const queryClient = useQueryClient();
   const newProductMutation = useMutation(postProduct, {
     onSuccess: () => queryClient.invalidateQueries("admin:products"),
   });
 
   const handleSubmit = async (values, bag) => {
-    console.log(values);
-    message.loading({ content: "Loading...", key: "product_update" });
+    try {
+      const newValues = {
+        ...values,
+        photos: JSON.stringify(values.photos),
+      };
+      message.loading({ content: "Loading...", key: "product_update" });
+      await newProductMutation.mutateAsync(newValues);
+      message.success({
+        content: "Product added successfully",
+        key: "product_update",
+        duration: 2,
+      });
+      navigate("/admin/products"); // Điều hướng sau khi thành công
+    } catch (error) {
+      message.error({
+        content: "Failed to add product",
+        key: "product_update",
+        duration: 2,
+      });
+      console.error(error); // Ghi lại lỗi để debug
+    }
+  };
 
-    const newValues = {
-      ...values,
-      photos: JSON.stringify(values.photos),
-    };
-
-    newProductMutation.mutate(newValues, {
-      onSuccess: () => {
-        message.success({
-          content: "Add Product is successfully",
-          key: "product_update",
-          duration: 2,
-        });
-      },
-    });
+  const handlePriceChange = (e, setFieldValue) => {
+    const value = e.target.value;
+    // Check if the input value is a valid number and greater than 0
+    if (/^\d*\.?\d*$/.test(value) && value >= 0) {
+      setFieldValue("price", value);
+    }
   };
 
   return (
@@ -57,12 +72,20 @@ function NewProduct() {
         </ul>
       </nav>
       <Box mt={10}>
-        <Text fontsize="2xl">Edit</Text>
+        <Button
+          colorScheme="blue"
+          onClick={() => navigate("/admin")} // Điều hướng đến trang Home
+          mb={4} // Khoảng cách bên dưới nút
+        >
+          Edit
+        </Button>
+
         <Formik
           initialValues={{
             title: "",
             description: "",
             price: "",
+            currency: "USD", // Default value for currency
             photos: [],
           }}
           validationSchema={validationSchema}
@@ -76,12 +99,13 @@ function NewProduct() {
             handleBlur,
             values,
             isSubmitting,
+            setFieldValue, // To update the form field
           }) => (
             <>
               <Box>
                 <Box my={5} textAlign="left">
                   <form onSubmit={handleSubmit}>
-                    <FormControl>
+                    <FormControl isRequired isInvalid={touched.title && errors.title}>
                       <FormLabel>Title</FormLabel>
                       <Input
                         name="title"
@@ -89,7 +113,6 @@ function NewProduct() {
                         onBlur={handleBlur}
                         value={values.title}
                         disabled={isSubmitting}
-                        isInvalid={touched.title && errors.title}
                       />
                       {touched.title && errors.title && (
                         <Text mt={2} color="red.500">
@@ -97,7 +120,7 @@ function NewProduct() {
                         </Text>
                       )}
                     </FormControl>
-                    <FormControl mt={4}>
+                    <FormControl isRequired mt={4} isInvalid={touched.description && errors.description}>
                       <FormLabel>Description</FormLabel>
                       <Textarea
                         name="description"
@@ -105,7 +128,6 @@ function NewProduct() {
                         onBlur={handleBlur}
                         value={values.description}
                         disabled={isSubmitting}
-                        isInvalid={touched.description && errors.description}
                       />
                       {touched.description && errors.description && (
                         <Text mt={2} color="red.500">
@@ -113,15 +135,14 @@ function NewProduct() {
                         </Text>
                       )}
                     </FormControl>
-                    <FormControl mt={4}>
+                    <FormControl isRequired mt={4} isInvalid={touched.price && errors.price}>
                       <FormLabel>Price</FormLabel>
                       <Input
                         name="price"
-                        onChange={handleChange}
+                        onChange={(e) => handlePriceChange(e, setFieldValue)}
                         onBlur={handleBlur}
                         value={values.price}
                         disabled={isSubmitting}
-                        isInvalid={touched.description && errors.description}
                       />
                       {touched.price && errors.price && (
                         <Text mt={2} color="red.500">
@@ -129,6 +150,29 @@ function NewProduct() {
                         </Text>
                       )}
                     </FormControl>
+
+                    {/* Select Currency */}
+                    <FormControl isRequired mt={4} isInvalid={touched.currency && errors.currency}>
+                      <FormLabel>Currency</FormLabel>
+                      <Select
+                        name="currency"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.currency}
+                        disabled={isSubmitting}
+                      >
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="VND">VND</option>
+                        <option value="GBP">GBP</option>
+                      </Select>
+                      {touched.currency && errors.currency && (
+                        <Text mt={2} color="red.500">
+                          {errors.currency}
+                        </Text>
+                      )}
+                    </FormControl>
+
                     <FormControl mt={4}>
                       <FormLabel>Photos</FormLabel>
                       <FieldArray
@@ -137,14 +181,18 @@ function NewProduct() {
                           <div>
                             {values.photos &&
                               values.photos.map((photo, index) => (
-                                <div key={index}>
+                                <div key={index} className="input-button-row">
                                   <Input
                                     name={`photos.${index}`}
                                     value={photo}
                                     disabled={isSubmitting}
                                     onChange={handleChange}
-                                    width="90%"
                                   />
+                                  {errors.photos?.[index] && touched.photos?.[index] && (
+                                    <Text mt={2} color="red.500">
+                                      {errors.photos[index]}
+                                    </Text>
+                                  )}
                                   <Button
                                     ml="4"
                                     type="button"
