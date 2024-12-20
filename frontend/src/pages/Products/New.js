@@ -1,89 +1,235 @@
-</Text>
-)}
-</FormControl>
-<FormControl mt={4}>
-{/* <FormControl mt={4}>
-<FormLabel>Photos</FormLabel>
-<FieldArray
-  name="photos"
-@@ -164,7 +164,63 @@ function NewProduct() {
-    </div>
-  )}
-/>
-</FormControl>
-</FormControl> */}
-<FormControl mt={4}>
-  <FormLabel>Photos</FormLabel>
-  <FieldArray
-    name="photos"
-    render={(arrayHelpers) => (
-      <div>
-        {values.photos && values.photos.map((photo, index) => (
-          <div key={index}>
-            <Input
-              name={`photos.${index}`}
-              value={photo}
-              disabled={isSubmitting}
-              onChange={handleChange}
-              width="90%"
-              isInvalid={touched.photos?.[index] && errors.photos?.[index]} // Kiểm tra lỗi cho từng ảnh
-            />
-            {touched.photos?.[index] && errors.photos?.[index] && (
-              <Text mt={2} color="red.500">{errors.photos[index]}</Text>
-            )}
+import React from "react";
+import { postProduct } from "../../api";
+import { useMutation, useQueryClient } from "react-query";
+import './product.css';
+import {
+  Box,
+  FormControl,
+  FormLabel,
+  Text,
+  Input,
+  Textarea,
+  Button,
+  Select,
+} from "@chakra-ui/react";
+import { Link, useNavigate } from "react-router-dom"; // Import useNavigate
+import { Formik, FieldArray } from "formik";
+import validationSchema from "./validations";
+import { message } from "antd";
 
-            {/* Hiển thị ảnh nếu URL hợp lệ */}
-            {photo && (
-              <div>
-                <img
-                  src={photo}
-                  alt={`photo-${index}`}
-                  style={{ maxWidth: "100px", marginTop: "10px", borderRadius: "5px" }}
-                />
-              </div>
-            )}
+function NewProduct() {
+  const navigate = useNavigate(); // Hook điều hướng
+  const queryClient = useQueryClient();
+  const newProductMutation = useMutation(postProduct, {
+    onSuccess: () => queryClient.invalidateQueries("admin:products"),
+  });
 
-            <Button
-              ml="4"
-              type="button"
-              colorScheme="red"
-              onClick={() => arrayHelpers.remove(index)}
-            >
-              Remove
-            </Button>
-          </div>
-        ))}
+  const handleSubmit = async (values, bag) => {
+    try {
+      const newValues = {
+        ...values,
+        photos: JSON.stringify(values.photos),
+      };
+      message.loading({ content: "Loading...", key: "product_update" });
+      await newProductMutation.mutateAsync(newValues);
+      message.success({
+        content: "Product added successfully",
+        key: "product_update",
+        duration: 2,
+      });
+      navigate("/admin/products"); // Điều hướng sau khi thành công
+    } catch (error) {
+      message.error({
+        content: "Failed to add product",
+        key: "product_update",
+        duration: 2,
+      });
+      console.error(error); // Ghi lại lỗi để debug
+    }
+  };
+
+  const handlePriceChange = (e, setFieldValue) => {
+    const value = e.target.value;
+    // Check if the input value is a valid number and greater than 0
+    if (/^\d*\.?\d*$/.test(value) && value >= 0) {
+      setFieldValue("price", value);
+    }
+  };
+
+  return (
+    <div>
+      <nav>
+        <ul className="admin-menu">
+          <li>
+            <Link to="/admin">Home</Link>
+          </li>
+          <li>
+            <Link to="/admin/orders">Order</Link>
+          </li>
+          <li>
+            <Link to="/admin/products">Products</Link>
+          </li>
+        </ul>
+      </nav>
+      <Box mt={10}>
         <Button
-          mt="5"
-          onClick={() => arrayHelpers.push("")}
+          colorScheme="blue"
+          onClick={() => navigate("/admin")} // Điều hướng đến trang Home
+          mb={4} // Khoảng cách bên dưới nút
         >
-          Add a Photo
+          Edit
         </Button>
-      </div>
-    )}
-  />
-  {/* Hiển thị thông báo lỗi nếu mảng photos trống */}
-  {touched.photos && errors.photos && typeof errors.photos === 'string' && (
-    <Text mt={2} color="red.500">{errors.photos}</Text>
-  )}
-</FormControl>
 
-<Button
-mt={4}
-width="full"
-type="submit"
-isLoading={isSubmitting}
->
-Add Product
-</Button>
-</form>
-</Box>
-</Box>
-</>
-)}
-</Formik>
-</Box>
-</div>
-);
+        <Formik
+          initialValues={{
+            title: "",
+            description: "",
+            price: "",
+            currency: "USD", // Default value for currency
+            photos: [],
+          }}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({
+            handleSubmit,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            values,
+            isSubmitting,
+            setFieldValue, // To update the form field
+          }) => (
+            <>
+              <Box>
+                <Box my={5} textAlign="left">
+                  <form onSubmit={handleSubmit}>
+                    <FormControl isRequired isInvalid={touched.title && errors.title}>
+                      <FormLabel>Title</FormLabel>
+                      <Input
+                        name="title"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.title}
+                        disabled={isSubmitting}
+                      />
+                      {touched.title && errors.title && (
+                        <Text mt={2} color="red.500">
+                          {errors.title}
+                        </Text>
+                      )}
+                    </FormControl>
+                    <FormControl isRequired mt={4} isInvalid={touched.description && errors.description}>
+                      <FormLabel>Description</FormLabel>
+                      <Textarea
+                        name="description"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.description}
+                        disabled={isSubmitting}
+                      />
+                      {touched.description && errors.description && (
+                        <Text mt={2} color="red.500">
+                          {errors.description}
+                        </Text>
+                      )}
+                    </FormControl>
+                    <FormControl isRequired mt={4} isInvalid={touched.price && errors.price}>
+                      <FormLabel>Price</FormLabel>
+                      <Input
+                        name="price"
+                        onChange={(e) => handlePriceChange(e, setFieldValue)}
+                        onBlur={handleBlur}
+                        value={values.price}
+                        disabled={isSubmitting}
+                      />
+                      {touched.price && errors.price && (
+                        <Text mt={2} color="red.500">
+                          {errors.price}
+                        </Text>
+                      )}
+                    </FormControl>
+
+                    {/* Select Currency */}
+                    <FormControl isRequired mt={4} isInvalid={touched.currency && errors.currency}>
+                      <FormLabel>Currency</FormLabel>
+                      <Select
+                        name="currency"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.currency}
+                        disabled={isSubmitting}
+                      >
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="VND">VND</option>
+                        <option value="GBP">GBP</option>
+                      </Select>
+                      {touched.currency && errors.currency && (
+                        <Text mt={2} color="red.500">
+                          {errors.currency}
+                        </Text>
+                      )}
+                    </FormControl>
+
+                    <FormControl mt={4}>
+                      <FormLabel>Photos</FormLabel>
+                      <FieldArray
+                        name="photos"
+                        render={(arrayHelpers) => (
+                          <div>
+                            {values.photos &&
+                              values.photos.map((photo, index) => (
+                                <div key={index} className="input-button-row">
+                                  <Input
+                                    name={`photos.${index}`}
+                                    value={photo}
+                                    disabled={isSubmitting}
+                                    onChange={handleChange}
+                                  />
+                                  {errors.photos?.[index] && touched.photos?.[index] && (
+                                    <Text mt={2} color="red.500">
+                                      {errors.photos[index]}
+                                    </Text>
+                                  )}
+                                  <Button
+                                    ml="4"
+                                    type="button"
+                                    colorScheme="red"
+                                    onClick={() => arrayHelpers.remove(index)}
+                                  >
+                                    Remove
+                                  </Button>
+                                </div>
+                              ))}
+                            <Button
+                              mt="5"
+                              onClick={() => arrayHelpers.push("")}
+                            >
+                              Add a Photo
+                            </Button>
+                          </div>
+                        )}
+                      />
+                    </FormControl>
+                    <Button
+                      mt={4}
+                      width="full"
+                      type="submit"
+                      isLoading={isSubmitting}
+                    >
+                      Add Product
+                    </Button>
+                  </form>
+                </Box>
+              </Box>
+            </>
+          )}
+        </Formik>
+      </Box>
+    </div>
+  );
 }
+
 export default NewProduct;
