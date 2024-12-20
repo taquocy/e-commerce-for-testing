@@ -15,34 +15,36 @@ import { fetcRegister } from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-function Signup({ history }) {
-  const { login } = useAuth();
 function Signup() {
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const formik = useFormik({
     initialValues: {
-@@ -26,23 +26,29 @@ function Signup({ history }) {
+      email: "",
+      password: "",
+      passwordConfirm: "",
+    },
     validationSchema,
     onSubmit: async (values, bag) => {
       try {
+        // Make the registration API call
         const registerResponse = await fetcRegister({
-        // Gửi yêu cầu đăng ký
-        await fetcRegister({
           email: values.email,
           password: values.password,
         });
+
+        // Handle successful registration and login
         login(registerResponse);
-        history.push("/profile");
 
-        // Hiển thị thông báo đăng ký thành công
-        alert("Đăng ký thành công!");
+        // Show success alert
+        alert("Registration successful!");
 
-        // Chuyển hướng sang trang đăng nhập
+        // Navigate to the sign-in page after successful registration
         navigate("/signin");
       } catch (e) {
-        bag.setErrors({ general: e.response.data.message });
-        bag.setErrors({ general: e.response?.data?.message || "Lỗi xảy ra" });
+        // Handle any errors during the registration process
+        bag.setErrors({ general: e.response?.data?.message || "An error occurred" });
       }
     },
   });
@@ -53,7 +55,7 @@ function Signup() {
         <Box pt={10}>
           <Box textAlign="center">
             <Heading>Signup</Heading>
-            <Heading>Sign  upp</Heading>
+            <Heading as="h2" size="md" mt={2}>Create your account</Heading>
           </Box>
           <Box my={5}>
             {formik.errors.general && (
@@ -63,7 +65,7 @@ function Signup() {
           <Box my={5} textAlign="left">
             <form onSubmit={formik.handleSubmit}>
               <FormControl>
-                <FormLabel>E-mail</FormLabel>
+                <FormLabel>Email</FormLabel>
                 <Input
                   name="email"
                   onChange={formik.handleChange}
@@ -72,6 +74,7 @@ function Signup() {
                   isInvalid={formik.touched.email && formik.errors.email}
                 />
               </FormControl>
+
               <FormControl mt="4">
                 <FormLabel>Password</FormLabel>
                 <Input
@@ -83,6 +86,7 @@ function Signup() {
                   isInvalid={formik.touched.password && formik.errors.password}
                 />
               </FormControl>
+
               <FormControl mt="4">
                 <FormLabel>Password Confirm</FormLabel>
                 <Input
@@ -91,13 +95,11 @@ function Signup() {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.passwordConfirm}
-                  isInvalid={
-                    formik.touched.passwordConfirm &&
-                    formik.errors.passwordConfirm
-                  }
+                  isInvalid={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
                 />
               </FormControl>
-              <Button mt="4" width="full" type="submit">
+
+              <Button mt="4" width="full" type="submit" isLoading={formik.isSubmitting}>
                 Sign Up
               </Button>
             </form>
@@ -107,4 +109,5 @@ function Signup() {
     </div>
   );
 }
+
 export default Signup;
