@@ -1,9 +1,13 @@
-import * as yup from "yup";
+import * as Yup from "yup";
 
-const editScheme = yup.object().shape({
-  title: yup.string().required(),
-  description: yup.string().min(5).required(),
-  price: yup.string().required(),
+const validationSchema = Yup.object({
+  title: Yup.string().required("Title is required"),
+  description: Yup.string().required("Description is required"),
+  price: Yup.number()
+    .required("Price is required")
+    .positive("Price must be a positive number")
+    .typeError("Price must be a number"),
+  photos: Yup.array().of(Yup.string().url("Must be a valid URL")),
 });
 
-export default editScheme;
+export default validationSchema;

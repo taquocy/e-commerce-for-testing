@@ -15,14 +15,30 @@ import { Formik, FieldArray } from "formik";
 import validationSchema from "./validations";
 import { message } from "antd";
 
+
 function NewProduct() {
   const queryClient = useQueryClient();
+
   const newProductMutation = useMutation(postProduct, {
     onSuccess: () => queryClient.invalidateQueries("admin:products"),
+    onError: (error) => {
+      message.error({
+        content: `Failed to add product: ${
+          error.response?.data?.message || error.message
+        }`,
+        key: "product_update",
+        duration: 3,
+      });
+    },
   });
 
   const handleSubmit = async (values, bag) => {
-    console.log(values);
+    // Kiểm tra lỗi trong form trước khi gửi
+    if (Object.keys(bag.errors).length > 0) {
+      message.error("Please fix the errors in the form.");
+      return;
+    }
+
     message.loading({ content: "Loading...", key: "product_update" });
 
     const newValues = {
@@ -33,7 +49,7 @@ function NewProduct() {
     newProductMutation.mutate(newValues, {
       onSuccess: () => {
         message.success({
-          content: "Add Product is successfully",
+          content: "Product added successfully",
           key: "product_update",
           duration: 2,
         });
@@ -57,7 +73,7 @@ function NewProduct() {
         </ul>
       </nav>
       <Box mt={10}>
-        <Text fontsize="2xl">Edit</Text>
+        <Text fontSize="2xl">Add New Product</Text>
         <Formik
           initialValues={{
             title: "",
@@ -81,6 +97,19 @@ function NewProduct() {
               <Box>
                 <Box my={5} textAlign="left">
                   <form onSubmit={handleSubmit}>
+                    {Object.keys(errors).length > 0 && (
+                      <Box bg="red.100" p={4} borderRadius="md" mb={4}>
+                        <ul>
+                          {Object.entries(errors).map(([field, error]) => (
+                            <li key={field}>
+                              <Text color="red.500" fontSize="sm">
+                                {field}: {error}
+                              </Text>
+                            </li>
+                          ))}
+                        </ul>
+                      </Box>
+                    )}
                     <FormControl>
                       <FormLabel>Title</FormLabel>
                       <Input
@@ -121,7 +150,7 @@ function NewProduct() {
                         onBlur={handleBlur}
                         value={values.price}
                         disabled={isSubmitting}
-                        isInvalid={touched.description && errors.description}
+                        isInvalid={touched.price && errors.price}
                       />
                       {touched.price && errors.price && (
                         <Text mt={2} color="red.500">
