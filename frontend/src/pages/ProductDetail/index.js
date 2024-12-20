@@ -17,8 +17,9 @@ import {
   Card,
   CardBody,
   CardFooter,
+  Tooltip,
 } from "@chakra-ui/react";
-import { StarIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons"; // Đảm bảo import đúng
+import { StarIcon, EditIcon, DeleteIcon } from "@chakra-ui/icons";
 
 import { useBasket } from "../../contexts/BasketContext";
 
@@ -94,6 +95,29 @@ function ProductDetail() {
     setReviews(reviews.filter((review) => review.id !== id));
   };
 
+  const handleClearReviews = () => {
+    setReviews([]);
+  };
+
+  const averageRating = reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length || 0;
+
+  const getRatingLabel = (rating) => {
+    switch (rating) {
+      case 1:
+        return "Rất tệ";
+      case 2:
+        return "Tệ";
+      case 3:
+        return "Bình thường";
+      case 4:
+        return "Tốt";
+      case 5:
+        return "Rất tốt";
+      default:
+        return "";
+    }
+  };
+
   return (
     <div>
       <Box mt="8">
@@ -125,7 +149,7 @@ function ProductDetail() {
             <Button
               variant="solid"
               colorScheme={findBasketItem ? "red" : "whatsapp"}
-              onClick={() => addToBasket(data, findBasketItem)}
+              onClick={() => addToBasket(data)}
             >
               {findBasketItem ? "Remove from basket" : "Add to Basket"}
             </Button>
@@ -232,9 +256,8 @@ function ProductDetail() {
 
       {/* Đánh Giá Sản Phẩm */}
       <Box mt="8">
-        <Heading size="lg" mb="4">
-          Đánh Giá Sản Phẩm
-        </Heading>
+        <Heading size="lg" mb="4">Đánh Giá Sản Phẩm</Heading>
+        <Text fontWeight="bold" mb="4">Trung bình: {averageRating.toFixed(1)} ⭐</Text>
         <Box>
           <Flex align="center" mb="4">
             {[...Array(5)].map((_, index) => (
@@ -246,6 +269,7 @@ function ProductDetail() {
                 onClick={() => setNewRating(index + 1)}
               />
             ))}
+            <Text ml="4" fontWeight="bold">{getRatingLabel(newRating)}</Text>
           </Flex>
           <Textarea
             placeholder="Hãy để lại bình luận sản phẩm"
@@ -256,8 +280,8 @@ function ProductDetail() {
             <Button colorScheme="green" onClick={handleAddReview}>
               Tải bình luận lên
             </Button>
-            <Button colorScheme="red" onClick={() => setNewReview("")}>
-              Xóa bình luận
+            <Button colorScheme="red" onClick={handleClearReviews}>
+              Xóa tất cả bình luận
             </Button>
           </Flex>
         </Box>
@@ -275,14 +299,15 @@ function ProductDetail() {
               <Text>{`⭐`.repeat(review.rating)}</Text>
             </Flex>
             <Text mt="2">{review.comment}</Text>
-            <Button
-              mt="2"
-              colorScheme="red"
-              size="sm"
-              onClick={() => handleDeleteReview(review.id)}
-            >
-              Xóa đánh giá
-            </Button>
+            <Tooltip label="Xóa đánh giá" fontSize="sm">
+              <IconButton
+                mt="2"
+                icon={<DeleteIcon />}
+                colorScheme="red"
+                size="sm"
+                onClick={() => handleDeleteReview(review.id)}
+              />
+            </Tooltip>
           </Box>
         ))}
       </Box>
