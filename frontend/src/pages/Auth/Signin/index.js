@@ -28,7 +28,7 @@ function Signup() {
     validationSchema,
     onSubmit: async (values, bag) => {
       try {
-        // Make the registration API call
+        // Send registration request
         const registerResponse = await fetcRegister({
           email: values.email,
           password: values.password,
@@ -40,10 +40,10 @@ function Signup() {
         // Show success alert
         alert("Registration successful!");
 
-        // Navigate to the sign-in page after successful registration
+        // Redirect to the sign-in page after successful registration
         navigate("/signin");
       } catch (e) {
-        // Handle any errors during the registration process
+        // Handle errors
         bag.setErrors({ general: e.response?.data?.message || "An error occurred" });
       }
     },
@@ -55,7 +55,9 @@ function Signup() {
         <Box pt={10}>
           <Box textAlign="center">
             <Heading>Signup</Heading>
-            <Heading as="h2" size="md" mt={2}>Create your account</Heading>
+            <Heading as="h2" size="md" mt={2}>
+              Create your account
+            </Heading>
           </Box>
           <Box my={5}>
             {formik.errors.general && (
