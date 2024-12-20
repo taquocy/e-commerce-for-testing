@@ -32,7 +32,7 @@ function Orders() {
       <nav>
         <ul className="admin-menu">
           <li>
-            <Link to="/admin">Home</Link>
+            <Link to="/admin"> jlhlhHome</Link>
           </li>
           <li>
             <Link to="/admin/orders">Order</Link>
