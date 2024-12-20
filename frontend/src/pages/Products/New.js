@@ -1,6 +1,7 @@
 import React from "react";
 import { postProduct } from "../../api";
 import { useMutation, useQueryClient } from "react-query";
+import './product.css';
 import {
   Box,
   FormControl,

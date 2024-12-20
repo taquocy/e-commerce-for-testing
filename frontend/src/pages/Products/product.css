@@ -1,0 +1,140 @@
+/* Định dạng cho menu quản trị */
+.admin-menu {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-bottom: 2px solid #ddd;
+  }
+  
+  .admin-menu li {
+    margin: 0;
+  }
+  
+  .admin-menu a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .admin-menu a:hover {
+    color: #007bff;
+  }
+  
+  /* Định dạng chung cho form */
+  form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  form label {
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+  }
+  
+  form input,
+  form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  
+  form input:focus,
+  form textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+  }
+  
+  /* Định dạng cho nút */
+  button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* Khoảng cách giữa các thành phần trong form */
+  form .form-control {
+    margin-bottom: 20px;
+  }
+  
+  /* Định dạng cho thông báo lỗi */
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  
+  /* Định dạng danh sách ảnh (photos) */
+  .photo-list {
+    margin-top: 10px;
+  }
+  
+  .photo-list input {
+    margin-right: 10px;
+  }
+  
+  .photo-list button {
+    margin-left: 10px;
+  }
+  
+  .photo-list .add-photo-btn {
+    margin-top: 15px;
+    display: inline-block;
+  }
+  
+  /* Đặt input và nút Remove trên cùng một hàng */
+.input-button-row {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Khoảng cách giữa input và button */
+  }
+  
+  .input-button-row input {
+    flex: 1; /* Input chiếm phần lớn chiều rộng */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .input-button-row button {
+    padding: 8px 12px;
+    background-color: #ff4d4f;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .input-button-row button:hover {
+    background-color: #d9363e;
+  }
+  
