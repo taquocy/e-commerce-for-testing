@@ -20,10 +20,10 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useBasket } from "../../contexts/BasketContext";
-import { postOrder } from "../../api.js";
+import { postOrder } from "../../api"; 
 
 function Basket() {
-  const [address, setAddress] = useState();
+  const [address, setAddress] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef(null);
 
@@ -34,13 +34,16 @@ function Basket() {
     const itemIds = items.map((item) => item._id);
     const input = {
       address,
-      items: JSON.stringify(itemIds),
+      items: JSON.stringify(itemIds), 
     };
 
-    await postOrder(input);
-
-    emptyBasket();
-    onClose();
+    try {
+      await postOrder(input); 
+      emptyBasket(); 
+      onClose(); 
+    } catch (error) {
+      console.error("Error posting order:", error);
+    }
   };
 
   return (
@@ -53,9 +56,9 @@ function Basket() {
       )}
       {items.length > 0 && (
         <>
-          <ul style={({ listStyleType: "decimal" }, { display: "flex" })}>
+          <ul style={{ listStyleType: "decimal", display: "flex" }}>
             {items.map((item) => (
-              <li key={item._id} style={({ margin: 20 }, { width: "25%" })}>
+              <li key={item._id} style={{ margin: 20, width: "25%" }}>
                 <Link to={`/product/${item._id}`}>
                   <Text fontSize="22">
                     {item.title} - {item.price} $
@@ -84,7 +87,6 @@ function Basket() {
           <Box mt="10">
             <Text fontSize="22">Total: {total}$</Text>
           </Box>
-          {/* Order kısmı buradan sonra başlamaktadır. */}
           <Button onClick={onOpen} colorScheme="whatsapp" mt={4}>
             Buy now
           </Button>
@@ -92,14 +94,14 @@ function Basket() {
           <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>Create your account</ModalHeader>
+              <ModalHeader>Enter Shipping Address</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={6}>
                 <FormControl>
-                  <FormLabel>Adress</FormLabel>
+                  <FormLabel>Address</FormLabel>
                   <Textarea
                     ref={initialRef}
-                    placeholder="Adress"
+                    placeholder="Enter your shipping address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                   />
