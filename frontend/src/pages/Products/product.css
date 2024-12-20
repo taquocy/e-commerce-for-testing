@@ -1,140 +1,168 @@
-/* Định dạng cho menu quản trị */
-.admin-menu {
-    list-style: none;
+/* product.css */
+
+/* Global Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f7fafc; /* Light background for the whole page */
+    color: #2d3748; /* Dark text color */
+  }
+  
+  /* Admin Menu Navigation */
+  .admin-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    background-color: #2b6cb0;
     display: flex;
-    gap: 20px;
-    padding: 10px;
-    background-color: #f5f5f5;
-    border-bottom: 2px solid #ddd;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   
   .admin-menu li {
-    margin: 0;
+    margin-right: 20px;
   }
   
-  .admin-menu a {
+  .admin-menu li a {
     text-decoration: none;
-    color: #333;
     font-weight: bold;
+    color: #ffffff;
+    padding: 12px 16px;
+    display: block;
+    transition: background-color 0.3s ease;
   }
   
-  .admin-menu a:hover {
-    color: #007bff;
+  .admin-menu li a:hover {
+    background-color: #1a4a9b;
+    border-radius: 4px;
   }
   
-  /* Định dạng chung cho form */
-  form {
+  /* Main Form Box */
+  .Box {
+    background-color: #ffffff;
+    padding: 30px;
+    margin: 40px auto;
     max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ddd;
     border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   }
   
-  form label {
-    font-size: 14px;
-    font-weight: bold;
-    color: #555;
-  }
-  
-  form input,
-  form textarea {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
-    box-sizing: border-box;
-  }
-  
-  form input:focus,
-  form textarea:focus {
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
-  }
-  
-  /* Định dạng cho nút */
-  button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  /* Khoảng cách giữa các thành phần trong form */
-  form .form-control {
+  h1 {
+    font-size: 1.8rem;
+    color: #3182ce;
+    text-align: center;
     margin-bottom: 20px;
   }
   
-  /* Định dạng cho thông báo lỗi */
+  /* Button Styles */
+  button {
+    background-color: #3182ce;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+  }
+  
+  button:hover {
+    background-color: #2b6cb0;
+    transform: translateY(-2px);
+  }
+  
+  button:disabled {
+    background-color: #cbd5e0;
+    cursor: not-allowed;
+  }
+  
+  /* Input and Textarea Styles */
+  input[type="text"],
+  input[type="number"],
+  textarea {
+    width: 100%;
+    padding: 14px 16px;
+    margin-top: 8px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    font-size: 1rem;
+    background-color: #fafafa;
+    transition: border-color 0.2s ease-in-out;
+  }
+  
+  input[type="text"]:focus,
+  input[type="number"]:focus,
+  textarea:focus {
+    border-color: #3182ce;
+    outline: none;
+  }
+  
+  /* Input Field with Errors */
+  input[type="text"]:invalid,
+  textarea:invalid {
+    border-color: #e53e3e;
+  }
+  
   .error-message {
-    color: red;
-    font-size: 12px;
+    color: #e53e3e;
+    font-size: 0.875rem;
     margin-top: 5px;
   }
   
-  /* Định dạng danh sách ảnh (photos) */
-  .photo-list {
-    margin-top: 10px;
-  }
-  
-  .photo-list input {
-    margin-right: 10px;
-  }
-  
-  .photo-list button {
-    margin-left: 10px;
-  }
-  
-  .photo-list .add-photo-btn {
-    margin-top: 15px;
-    display: inline-block;
-  }
-  
-  /* Đặt input và nút Remove trên cùng một hàng */
-.input-button-row {
+  /* Photo Input Field */
+  .input-button-row {
     display: flex;
     align-items: center;
-    gap: 10px; /* Khoảng cách giữa input và button */
+    margin-bottom: 1rem;
   }
   
   .input-button-row input {
-    flex: 1; /* Input chiếm phần lớn chiều rộng */
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
+    flex: 1;
+    padding: 12px 16px;
+    margin-right: 10px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
   }
   
   .input-button-row button {
-    padding: 8px 12px;
-    background-color: #ff4d4f;
+    background-color: #e53e3e;
     color: white;
-    border: none;
-    border-radius: 4px;
+    padding: 10px 14px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
+    transition: background-color 0.3s ease;
   }
   
   .input-button-row button:hover {
-    background-color: #d9363e;
+    background-color: #c53030;
+  }
+  
+  /* Add Photo Button */
+  button[type="button"] {
+    background-color: #38b2ac;
+    margin-top: 1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+  
+  button[type="button"]:hover {
+    background-color: #319795;
+  }
+  
+  /* Success and Loading Messages */
+  .ant-message-notice-content {
+    font-size: 1rem;
+    background-color: #38b2ac;
+    color: #ffffff;
+    border-radius: 5px;
+    padding: 12px;
+  }
+  
+  .ant-message-notice-content .anticon {
+    color: white;
+  }
+  
+  /* Add transitions for a smoother feel */
+  * {
+    transition: all 0.2s ease;
   }
   
