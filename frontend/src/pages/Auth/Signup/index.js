@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Flex,
   Box,
@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const navigate = useNavigate();
+  const [buttonColor, setButtonColor] = useState("blue"); // State để thay đổi màu nút
 
   const formik = useFormik({
     initialValues: {
@@ -31,6 +32,9 @@ function Signup() {
           email: values.email,
           password: values.password,
         });
+
+        // Đổi màu nút sau khi nhấn
+        setButtonColor("green");
 
         // Hiển thị thông báo đăng ký thành công
         alert("Đăng ký thành công!");
@@ -48,7 +52,7 @@ function Signup() {
       <Flex align="center" width="full" justifyContent="center">
         <Box pt={10}>
           <Box textAlign="center">
-            <Heading>Sign upppp</Heading>
+            <Heading>Sign Up</Heading>
           </Box>
           <Box my={5}>
             {formik.errors.general && (
@@ -95,7 +99,12 @@ function Signup() {
                 />
               </FormControl>
 
-              <Button mt="4" width="full" type="submit">
+              <Button
+                mt="4"
+                width="full"
+                type="submit"
+                colorScheme={buttonColor} // Sử dụng màu từ state
+              >
                 Sign Up
               </Button>
             </form>
