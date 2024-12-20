@@ -1,57 +1,121 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import SignIn from './SignIn'; // Giả sử SignIn là component cần test
-import '@testing-library/jest-dom';
+import React from "react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import Signup from "./Signup";
+import { fetcRegister } from "../../../api";
+import { useAuth } from "../../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-describe('Sign In Component', () => {
-  // Test case 1: Đăng nhập với thông tin hợp lệ
-  test('Sign in with valid credentials', async () => {
-    render(<SignIn />);
+// Mocking the external dependencies
+jest.mock("../../../api", () => ({
+  fetcRegister: jest.fn(),
+}));
 
-    // Tìm các trường input và nút
-    const emailInput = screen.getByLabelText(/email/i); // Tìm input theo label "Email"
-    const passwordInput = screen.getByLabelText(/password/i); // Tìm input theo label "Password"
-    const signInButton = screen.getByRole('button', { name: /sign in/i }); // Nút đăng nhập
+jest.mock("../../../contexts/AuthContext", () => ({
+  useAuth: jest.fn(),
+}));
 
-    // Nhập thông tin hợp lệ
-    fireEvent.change(emailInput, { target: { value: 'user@example.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'correctpassword' } });
-    fireEvent.click(signInButton);
+jest.mock("react-router-dom", () => ({
+  useNavigate: jest.fn(),
+}));
 
-    // Kiểm tra xem có chuyển hướng hoặc thông báo thành công không
-    const successMessage = await screen.findByText(/welcome/i); // Thông báo chào mừng
-    expect(successMessage).toBeInTheDocument();
+describe("Signup Component", () => {
+  let navigate;
+  let login;
+
+  beforeEach(() => {
+    navigate = jest.fn();
+    login = jest.fn();
+    useNavigate.mockReturnValue(navigate);
+    useAuth.mockReturnValue({ login });
   });
 
-  // Test case 2: Đăng nhập với mật khẩu sai
-  test('Sign in with invalid password', async () => {
-    render(<SignIn />);
+  test("renders signup form correctly", () => {
+    render(<Signup />);
 
-    const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/password/i);
-    const signInButton = screen.getByRole('button', { name: /sign in/i });
-
-    fireEvent.change(emailInput, { target: { value: 'user@example.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'wrongpassword' } });
-    fireEvent.click(signInButton);
-
-    // Kiểm tra thông báo lỗi
-    const errorMessage = await screen.findByText(/incorrect password/i);
-    expect(errorMessage).toBeInTheDocument();
+    // Check if the form fields and submit button are rendered
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password confirm/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /sign up/i })).toBeInTheDocument();
   });
 
-  // Test case 3: Đăng nhập với email không tồn tại
-  test('Sign in with non-existent email', async () => {
-    render(<SignIn />);
+  test("shows validation errors when form is submitted with invalid data", async () => {
+    render(<Signup />);
 
-    const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/password/i);
-    const signInButton = screen.getByRole('button', { name: /sign in/i });
+    // Submit the form with empty fields
+    userEvent.click(screen.getByRole("button", { name: /sign up/i }));
 
-    fireEvent.change(emailInput, { target: { value: 'notexist@example.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'somepassword' } });
-    fireEvent.click(signInButton);
+    // Check if the validation errors are shown
+    await waitFor(() => {
+      expect(screen.getByText(/passwords must match/i)).toBeInTheDocument();
+      expect(screen.getByText(/this field is required/i)).toBeInTheDocument();
+    });
+  });
 
-    const errorMessage = await screen.findByText(/email does not exist/i);
-    expect(errorMessage).toBeInTheDocument();
+  test("submits the form successfully and navigates to profile", async () => {
+    fetcRegister.mockResolvedValue({ token: "fake-token" });
+
+    render(<Signup />);
+
+    // Fill out the form
+    userEvent.type(screen.getByLabelText(/email/i), "test@example.com");
+    userEvent.type(screen.getByLabelText(/password/i), "password123");
+    userEvent.type(screen.getByLabelText(/password confirm/i), "password123");
+
+    // Submit the form
+    userEvent.click(screen.getByRole("button", { name: /sign up/i }));
+
+    // Wait for the API call and navigation
+    await waitFor(() => {
+      expect(fetcRegister).toHaveBeenCalledWith({
+        email: "test@example.com",
+        password: "password123",
+      });
+      expect(login).toHaveBeenCalledWith({ token: "fake-token" });
+      expect(navigate).toHaveBeenCalledWith("/profile");
+    });
+  });
+
+  test("displays error message when API call fails", async () => {
+    fetcRegister.mockRejectedValue({
+      response: { data: { message: "Error occurred" } },
+    });
+
+    render(<Signup />);
+
+    // Fill out the form
+    userEvent.type(screen.getByLabelText(/email/i), "test@example.com");
+    userEvent.type(screen.getByLabelText(/password/i), "password123");
+    userEvent.type(screen.getByLabelText(/password confirm/i), "password123");
+
+    // Submit the form
+    userEvent.click(screen.getByRole("button", { name: /sign up/i }));
+
+    // Wait for the error message to appear
+    await waitFor(() => {
+      expect(screen.getByText(/error occurred/i)).toBeInTheDocument();
+    });
+  });
+
+  test("shows general error when API call fails with no message", async () => {
+    fetcRegister.mockRejectedValue({
+      response: { data: {} },
+    });
+
+    render(<Signup />);
+
+    // Fill out the form
+    userEvent.type(screen.getByLabelText(/email/i), "test@example.com");
+    userEvent.type(screen.getByLabelText(/password/i), "password123");
+    userEvent.type(screen.getByLabelText(/password confirm/i), "password123");
+
+    // Submit the form
+    userEvent.click(screen.getByRole("button", { name: /sign up/i }));
+
+    // Wait for the general error message to appear
+    await waitFor(() => {
+      expect(screen.getByText(/an error occurred/i)).toBeInTheDocument();
+    });
   });
 });
