@@ -1,0 +1,457 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NewProduct Component renders NewProduct component 1`] = `
+<DocumentFragment>
+  <div>
+    <nav>
+      <ul
+        class="admin-menu"
+      >
+        <li>
+          <a
+            href="/admin"
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a
+            href="/admin/orders"
+          >
+            Order
+          </a>
+        </li>
+        <li>
+          <a
+            href="/admin/products"
+          >
+            Products
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div
+      class="css-1q7njkh"
+    >
+      <button
+        class="chakra-button css-eaw8jh"
+        type="button"
+      >
+        Edit
+      </button>
+      <div
+        class="css-0"
+      >
+        <div
+          class="css-lgjuw7"
+        >
+          <form>
+            <div
+              class="chakra-form-control css-0"
+              role="group"
+            >
+              <label
+                class="chakra-form__label css-uvho5g"
+                for="field-:r0:"
+                id="field-:r0:-label"
+              >
+                Title
+                <span
+                  aria-hidden="true"
+                  class="chakra-form__required-indicator css-0"
+                  role="presentation"
+                >
+                  *
+                </span>
+              </label>
+              <input
+                aria-required="true"
+                class="chakra-input css-0"
+                id="field-:r0:"
+                name="title"
+                required=""
+                value=""
+              />
+            </div>
+            <div
+              class="chakra-form-control css-1fhgjcy"
+              role="group"
+            >
+              <label
+                class="chakra-form__label css-uvho5g"
+                for="field-:r1:"
+                id="field-:r1:-label"
+              >
+                Description
+                <span
+                  aria-hidden="true"
+                  class="chakra-form__required-indicator css-0"
+                  role="presentation"
+                >
+                  *
+                </span>
+              </label>
+              <textarea
+                aria-required="true"
+                class="chakra-textarea css-0"
+                id="field-:r1:"
+                name="description"
+                required=""
+              />
+            </div>
+            <div
+              class="chakra-form-control css-1fhgjcy"
+              role="group"
+            >
+              <label
+                class="chakra-form__label css-uvho5g"
+                for="field-:r2:"
+                id="field-:r2:-label"
+              >
+                Price
+                <span
+                  aria-hidden="true"
+                  class="chakra-form__required-indicator css-0"
+                  role="presentation"
+                >
+                  *
+                </span>
+              </label>
+              <input
+                aria-required="true"
+                class="chakra-input css-0"
+                id="field-:r2:"
+                name="price"
+                required=""
+                value=""
+              />
+            </div>
+            <div
+              class="chakra-form-control css-1fhgjcy"
+              role="group"
+            >
+              <label
+                class="chakra-form__label css-uvho5g"
+                for="field-:r3:"
+                id="field-:r3:-label"
+              >
+                Currency
+                <span
+                  aria-hidden="true"
+                  class="chakra-form__required-indicator css-0"
+                  role="presentation"
+                >
+                  *
+                </span>
+              </label>
+              <div
+                class="chakra-select__wrapper css-42b2qy"
+              >
+                <select
+                  aria-required="true"
+                  class="chakra-select css-1ik61og"
+                  id="field-:r3:"
+                  name="currency"
+                  required=""
+                >
+                  <option
+                    value="USD"
+                  >
+                    USD
+                  </option>
+                  <option
+                    value="EUR"
+                  >
+                    EUR
+                  </option>
+                  <option
+                    value="VND"
+                  >
+                    VND
+                  </option>
+                  <option
+                    value="GBP"
+                  >
+                    GBP
+                  </option>
+                </select>
+                <div
+                  class="chakra-select__icon-wrapper css-162mkon"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="chakra-select__icon"
+                    focusable="false"
+                    role="presentation"
+                    style="width: 1em; height: 1em; color: currentColor;"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div
+              class="chakra-form-control css-1fhgjcy"
+              role="group"
+            >
+              <label
+                class="chakra-form__label css-uvho5g"
+                for="field-:r4:"
+                id="field-:r4:-label"
+              >
+                Photos
+              </label>
+              <div>
+                <button
+                  class="chakra-button css-10tmkll"
+                  type="button"
+                >
+                  Add a Photo
+                </button>
+              </div>
+            </div>
+            <button
+              class="chakra-button css-2cxz8l"
+              type="submit"
+            >
+              Add Product
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
+
+exports[`NewProduct Component renders navigation links 1`] = `
+<DocumentFragment>
+  <div>
+    <nav>
+      <ul
+        class="admin-menu"
+      >
+        <li>
+          <a
+            href="/admin"
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a
+            href="/admin/orders"
+          >
+            Order
+          </a>
+        </li>
+        <li>
+          <a
+            href="/admin/products"
+          >
+            Products
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div
+      class="css-1q7njkh"
+    >
+      <button
+        class="chakra-button css-eaw8jh"
+        type="button"
+      >
+        Edit
+      </button>
+      <div
+        class="css-0"
+      >
+        <div
+          class="css-lgjuw7"
+        >
+          <form>
+            <div
+              class="chakra-form-control css-0"
+              role="group"
+            >
+              <label
+                class="chakra-form__label css-uvho5g"
+                for="field-:r5:"
+                id="field-:r5:-label"
+              >
+                Title
+                <span
+                  aria-hidden="true"
+                  class="chakra-form__required-indicator css-0"
+                  role="presentation"
+                >
+                  *
+                </span>
+              </label>
+              <input
+                aria-required="true"
+                class="chakra-input css-0"
+                id="field-:r5:"
+                name="title"
+                required=""
+                value=""
+              />
+            </div>
+            <div
+              class="chakra-form-control css-1fhgjcy"
+              role="group"
+            >
+              <label
+                class="chakra-form__label css-uvho5g"
+                for="field-:r6:"
+                id="field-:r6:-label"
+              >
+                Description
+                <span
+                  aria-hidden="true"
+                  class="chakra-form__required-indicator css-0"
+                  role="presentation"
+                >
+                  *
+                </span>
+              </label>
+              <textarea
+                aria-required="true"
+                class="chakra-textarea css-0"
+                id="field-:r6:"
+                name="description"
+                required=""
+              />
+            </div>
+            <div
+              class="chakra-form-control css-1fhgjcy"
+              role="group"
+            >
+              <label
+                class="chakra-form__label css-uvho5g"
+                for="field-:r7:"
+                id="field-:r7:-label"
+              >
+                Price
+                <span
+                  aria-hidden="true"
+                  class="chakra-form__required-indicator css-0"
+                  role="presentation"
+                >
+                  *
+                </span>
+              </label>
+              <input
+                aria-required="true"
+                class="chakra-input css-0"
+                id="field-:r7:"
+                name="price"
+                required=""
+                value=""
+              />
+            </div>
+            <div
+              class="chakra-form-control css-1fhgjcy"
+              role="group"
+            >
+              <label
+                class="chakra-form__label css-uvho5g"
+                for="field-:r8:"
+                id="field-:r8:-label"
+              >
+                Currency
+                <span
+                  aria-hidden="true"
+                  class="chakra-form__required-indicator css-0"
+                  role="presentation"
+                >
+                  *
+                </span>
+              </label>
+              <div
+                class="chakra-select__wrapper css-42b2qy"
+              >
+                <select
+                  aria-required="true"
+                  class="chakra-select css-1ik61og"
+                  id="field-:r8:"
+                  name="currency"
+                  required=""
+                >
+                  <option
+                    value="USD"
+                  >
+                    USD
+                  </option>
+                  <option
+                    value="EUR"
+                  >
+                    EUR
+                  </option>
+                  <option
+                    value="VND"
+                  >
+                    VND
+                  </option>
+                  <option
+                    value="GBP"
+                  >
+                    GBP
+                  </option>
+                </select>
+                <div
+                  class="chakra-select__icon-wrapper css-162mkon"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="chakra-select__icon"
+                    focusable="false"
+                    role="presentation"
+                    style="width: 1em; height: 1em; color: currentColor;"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div
+              class="chakra-form-control css-1fhgjcy"
+              role="group"
+            >
+              <label
+                class="chakra-form__label css-uvho5g"
+                for="field-:r9:"
+                id="field-:r9:-label"
+              >
+                Photos
+              </label>
+              <div>
+                <button
+                  class="chakra-button css-10tmkll"
+                  type="button"
+                >
+                  Add a Photo
+                </button>
+              </div>
+            </div>
+            <button
+              class="chakra-button css-2cxz8l"
+              type="submit"
+            >
+              Add Product
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
