@@ -11,37 +11,49 @@ import {
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import validationSchema from "./validations";
-import { fetchLogin } from "../../../api";
+import { fetcRegister } from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-function Signin({ history }) {
+function Signup({ history }) {
   const { login } = useAuth();
+function Signup() {
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
-    },
+@@ -26,23 +26,29 @@ function Signup({ history }) {
     validationSchema,
     onSubmit: async (values, bag) => {
       try {
-        const loginResponse = await fetchLogin({
+        const registerResponse = await fetcRegister({
+        // Gửi yêu cầu đăng ký
+        await fetcRegister({
           email: values.email,
           password: values.password,
         });
-        login(loginResponse);
+        login(registerResponse);
         history.push("/profile");
+
+        // Hiển thị thông báo đăng ký thành công
+        alert("Đăng ký thành công!");
+
+        // Chuyển hướng sang trang đăng nhập
+        navigate("/signin");
       } catch (e) {
         bag.setErrors({ general: e.response.data.message });
+        bag.setErrors({ general: e.response?.data?.message || "Lỗi xảy ra" });
       }
     },
   });
+
   return (
     <div>
       <Flex align="center" width="full" justifyContent="center">
         <Box pt={10}>
           <Box textAlign="center">
-            <Heading>Signin</Heading>
+            <Heading>Signup</Heading>
+            <Heading>Sign  upp</Heading>
           </Box>
           <Box my={5}>
             {formik.errors.general && (
@@ -60,7 +72,6 @@ function Signin({ history }) {
                   isInvalid={formik.touched.email && formik.errors.email}
                 />
               </FormControl>
-
               <FormControl mt="4">
                 <FormLabel>Password</FormLabel>
                 <Input
@@ -72,9 +83,22 @@ function Signin({ history }) {
                   isInvalid={formik.touched.password && formik.errors.password}
                 />
               </FormControl>
-
+              <FormControl mt="4">
+                <FormLabel>Password Confirm</FormLabel>
+                <Input
+                  name="passwordConfirm"
+                  type="password"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.passwordConfirm}
+                  isInvalid={
+                    formik.touched.passwordConfirm &&
+                    formik.errors.passwordConfirm
+                  }
+                />
+              </FormControl>
               <Button mt="4" width="full" type="submit">
-                Sign In
+                Sign Up
               </Button>
             </form>
           </Box>
@@ -83,8 +107,4 @@ function Signin({ history }) {
     </div>
   );
 }
-
-export default Signin;
-
-
-// TODO:
+export default Signup;
