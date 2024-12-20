@@ -25,29 +25,27 @@ function NewProduct() {
   });
 
   const handleSubmit = async (values, bag) => {
-    // Validate price: ensure it's positive and not zero
-    if (values.price <= 0) {
-      bag.setFieldError("price", "Price must be greater than 0");
-      return;
+    try {
+      const newValues = {
+        ...values,
+        photos: JSON.stringify(values.photos),
+      };
+      message.loading({ content: "Loading...", key: "product_update" });
+      await newProductMutation.mutateAsync(newValues);
+      message.success({
+        content: "Product added successfully",
+        key: "product_update",
+        duration: 2,
+      });
+      navigate("/admin/products"); // Điều hướng sau khi thành công
+    } catch (error) {
+      message.error({
+        content: "Failed to add product",
+        key: "product_update",
+        duration: 2,
+      });
+      console.error(error); // Ghi lại lỗi để debug
     }
-
-    console.log(values);
-    message.loading({ content: "Loading...", key: "product_update" });
-
-    const newValues = {
-      ...values,
-      photos: JSON.stringify(values.photos),
-    };
-
-    newProductMutation.mutate(newValues, {
-      onSuccess: () => {
-        message.success({
-          content: "Add Product is successfully",
-          key: "product_update",
-          duration: 2,
-        });
-      },
-    });
   };
 
   const handlePriceChange = (e, setFieldValue) => {
@@ -74,8 +72,6 @@ function NewProduct() {
         </ul>
       </nav>
       <Box mt={10}>
-
-        {/* Nút Edit - Điều hướng về trang Home */}
         <Button
           colorScheme="blue"
           onClick={() => navigate("/admin")} // Điều hướng đến trang Home
@@ -169,7 +165,6 @@ function NewProduct() {
                         <option value="EUR">EUR</option>
                         <option value="VND">VND</option>
                         <option value="GBP">GBP</option>
-                        {/* You can add more currencies here */}
                       </Select>
                       {touched.currency && errors.currency && (
                         <Text mt={2} color="red.500">
@@ -193,6 +188,11 @@ function NewProduct() {
                                     disabled={isSubmitting}
                                     onChange={handleChange}
                                   />
+                                  {errors.photos?.[index] && touched.photos?.[index] && (
+                                    <Text mt={2} color="red.500">
+                                      {errors.photos[index]}
+                                    </Text>
+                                  )}
                                   <Button
                                     ml="4"
                                     type="button"
