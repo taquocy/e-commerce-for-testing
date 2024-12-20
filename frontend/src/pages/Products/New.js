@@ -82,7 +82,7 @@ function NewProduct() {
                 <Box my={5} textAlign="left">
                   <form onSubmit={handleSubmit}>
                     <FormControl>
-                      <FormLabel>Title</FormLabel>
+                      <FormLabel>TITLE</FormLabel>
                       <Input
                         name="title"
                         onChange={handleChange}
@@ -151,7 +151,7 @@ function NewProduct() {
                                     colorScheme="red"
                                     onClick={() => arrayHelpers.remove(index)}
                                   >
-                                    Remove
+                                    REMOVE
                                   </Button>
                                 </div>
                               ))}
