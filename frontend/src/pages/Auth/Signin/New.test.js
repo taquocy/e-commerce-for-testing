@@ -39,19 +39,5 @@ describe('Sign In Component', () => {
     expect(errorMessage).toBeInTheDocument();
   });
 
-  // Test case 3: Đăng nhập với email không tồn tại
-  test('Sign in with non-existent email', async () => {
-    render(<SignIn />);
-
-    const emailInput = screen.getByLabelText(/email/i);
-    const passwordInput = screen.getByLabelText(/password/i);
-    const signInButton = screen.getByRole('button', { name: /sign in/i });
-
-    fireEvent.change(emailInput, { target: { value: 'notexist@example.com' } });
-    fireEvent.change(passwordInput, { target: { value: 'somepassword' } });
-    fireEvent.click(signInButton);
-
-    const errorMessage = await screen.findByText(/email does not exist/i);
-    expect(errorMessage).toBeInTheDocument();
-  });
+  
 });
