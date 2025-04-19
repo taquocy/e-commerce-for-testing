@@ -32,6 +32,9 @@ const Create = async (req, res, next) => {
 
   const { user_id } = req.payload;
 
+
+
+  // Test code here
   try {
     const order = new Order({
       user: user_id,
