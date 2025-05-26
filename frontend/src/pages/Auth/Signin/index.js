@@ -21,10 +21,13 @@ import { fetchLogin } from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Link as RouterLink } from "react-router-dom"; // Import RouterLink từ react-router-dom : npm install react-router-dom
 
+import { useNavigate } from "react-router-dom";
+
 function Signin({ history }) {
   const { login } = useAuth();
   const [showErrorIndicator, setShowErrorIndicator] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate(); // hook thay cho history
 
   const formik = useFormik({
     initialValues: {
@@ -45,7 +48,9 @@ function Signin({ history }) {
           password: values.password,
         });
         login(loginResponse);
-        history.push("/profile");
+        // history.push("/profile");
+        navigate("/"); // chuyển hướng về trang home
+
       } catch (e) {
         bag.setErrors({ general: e.response.data.message });
       }
