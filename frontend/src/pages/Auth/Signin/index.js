@@ -49,6 +49,7 @@ function Signin({ history }) {
         });
         login(loginResponse);
         // history.push("/profile");
+        
         navigate("/"); // chuyển hướng về trang home
 
       } catch (e) {
