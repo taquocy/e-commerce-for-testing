@@ -1,17 +1,19 @@
-FROM node:lts
+FROM node:lts AS build
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package*.json ./
-
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-
 RUN npm install
-
 COPY . .
-
 RUN npm run build
 
-EXPOSE 3000
+# Serve app
+FROM node:lts-alpine
 
-CMD ["npm", "start"]
+WORKDIR /app
+
+RUN npm install -g serve
+COPY --from=build /app/build ./build
+
+EXPOSE 3000
+CMD ["serve", "-s", "build", "-l", "3000"]
