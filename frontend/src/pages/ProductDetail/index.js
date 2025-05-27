@@ -14,10 +14,12 @@ import {
   ButtonGroup,
 } from "@chakra-ui/react";
 import { useBasket } from "../../contexts/BasketContext";
+import { useAuth } from "../../contexts/AuthContext";
 
 function ProductDetail() {
   const { product_id } = useParams();
   const { addToBasket, items } = useBasket();
+  const { loggedIn } = useAuth();
 
   const { isLoading, isError, data } = useQuery(["product", product_id], () =>
     fetchProduct(product_id)
@@ -36,6 +38,14 @@ function ProductDetail() {
     (basket_item) => String(basket_item._id) === String(data._id)
   );
   const images = data.photos.map((url) => ({ original: url }));
+
+  const handleAddToBasket = () => {
+    if (!loggedIn) {
+      alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!");
+      return;
+    }
+    addToBasket(data, findBasketItem);
+  };
 
   return (
     <div>
@@ -60,7 +70,7 @@ function ProductDetail() {
               <Button
                 variant="solid"
                 colorScheme={findBasketItem ? "red" : "green"}
-                onClick={() => addToBasket(data, findBasketItem)}
+                onClick={handleAddToBasket}
               >
                 {findBasketItem ? "Remove from Basket" : "Add to Basket"}
               </Button>

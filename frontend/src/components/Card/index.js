@@ -14,13 +14,27 @@ import {
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { useBasket } from "../../contexts/BasketContext";
+// impor
+import { useAuth } from "../../contexts/AuthContext";
 
 function Cards({ item }) {
   const { addToBasket, items } = useBasket();
 
+
+  const { loggedIn } = useAuth(); // lấy trạng thái đăng nhập
+
   const findBasketItem = items.find(
     (basket_item) => basket_item._id === item._id
   );
+
+  const handleAddToBasket = () => {
+    if (!loggedIn) {
+      // Có thể dùng navigate("/signin") nếu muốn chuyển hướng
+      alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!");
+      return;
+    }
+    addToBasket(item, findBasketItem);
+  };
 
   return (
     <Card maxW="sm">
@@ -49,7 +63,7 @@ function Cards({ item }) {
           <Button
             variant="solid"
             colorScheme={findBasketItem ? "red" : "green"}
-            onClick={() => addToBasket(item, findBasketItem)}
+            onClick={handleAddToBasket}
           >
             {findBasketItem ? "Remove from Basket" : "Add to Basket"}
           </Button>
@@ -58,7 +72,5 @@ function Cards({ item }) {
     </Card>
   );
 }
-
-
 
 export default Cards;
