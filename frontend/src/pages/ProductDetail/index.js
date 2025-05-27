@@ -11,6 +11,7 @@ import {
   Button,
   CardBody,
   CardFooter,
+  ButtonGroup,
 } from "@chakra-ui/react";
 import { useBasket } from "../../contexts/BasketContext";
 
@@ -30,7 +31,10 @@ function ProductDetail() {
     return <div>Error...</div>;
   }
 
-  const findBasketItem = items.find((item) => item._id === product_id);
+  // Sử dụng data._id thay vì item._id
+  const findBasketItem = items.find(
+    (basket_item) => String(basket_item._id) === String(data._id)
+  );
   const images = data.photos.map((url) => ({ original: url }));
 
   return (
@@ -52,17 +56,17 @@ function ProductDetail() {
             <Text color="blue.600" fontSize="2xl">
               {data.price}$
             </Text>
+            <ButtonGroup spacing="2">
+              <Button
+                variant="solid"
+                colorScheme={findBasketItem ? "red" : "green"}
+                onClick={() => addToBasket(data, findBasketItem)}
+              >
+                {findBasketItem ? "Remove from Basket" : "Add to Basket"}
+              </Button>
+             
+            </ButtonGroup>
           </CardBody>
-
-          <CardFooter>
-            <Button
-              variant="solid"
-              colorScheme={findBasketItem ? "red" : "whatsapp"}
-              onClick={() => addToBasket(data, findBasketItem)}
-            >
-              {findBasketItem ? "Remove from basket" : "Add to Basket"}
-            </Button>
-          </CardFooter>
         </Stack>
       </Card>
     </div>

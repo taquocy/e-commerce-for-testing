@@ -54,7 +54,7 @@ function Signup({ history }) {
         setTimeout(() => {
           // Chuyển hướng sau khi đăng ký thành công đến trang login
           // history.push("/profile");
-          navigate("/"); // chuyển hướng về trang home
+          navigate("/signin"); // chuyển hướng về trang signin
         }, 1500); // Chờ 1.5s trước khi chuyển trang (tùy chọn)
       } catch (e) {
         bag.setErrors({ general: e.response?.data?.message || "Registration failed." });

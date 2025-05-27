@@ -31,7 +31,7 @@ const validations = yup.object().shape({
     .required("Email là bắt buộc"),
   password: yup
     .string()
-    .min(5, "Mật khẩu phải có ít nhất 5 ký tự.")
+    .length(8, "Mật khẩu phải có đúng 8 ký tự.")
     .required("Mật khẩu là bắt buộc"),
 });
 
