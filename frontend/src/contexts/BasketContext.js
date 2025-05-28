@@ -1,4 +1,5 @@
 import { useState, createContext, useContext, useEffect } from "react";
+import { useAuth } from "./AuthContext";
 
 const BasketContext = createContext();
 
@@ -6,10 +7,17 @@ const defaultBasket = JSON.parse(localStorage.getItem("basket")) || [];
 
 const BasketProvider = ({ children }) => {
   const [items, setItems] = useState(defaultBasket);
+  const { user } = useAuth();
 
   useEffect(() => {
     localStorage.setItem("basket", JSON.stringify(items));
   }, [items]);
+
+  // Reset basket khi user thay đổi (đăng nhập mới hoặc đăng xuất)
+  useEffect(() => {
+    setItems([]);
+    localStorage.removeItem("basket");
+  }, [user]);
 
   const addToBasket = (data, findBasketItem) => {
     if (!findBasketItem) {
