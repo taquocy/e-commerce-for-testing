@@ -78,10 +78,7 @@ function Basket() {
                 >
                   Remove from Basket
                 </Button>
-                  {/* Order kısmı buradan sonra başlamaktadır. */}
-                <Button onClick={onOpen} colorScheme="green" mt={4}>
-                  Buy now
-                </Button>
+                
               </li>
             ))}
           </ul>
@@ -89,7 +86,10 @@ function Basket() {
             <Text fontSize="22">Total: {total}$</Text>
           </Box>
         
-
+  {/* Order kısmı buradan sonra başlamaktadır. */}
+                <Button onClick={onOpen} colorScheme="green" mt={4}>
+                  Buy now
+                </Button>     
           <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
