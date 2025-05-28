@@ -14,6 +14,8 @@ import Orders from "./pages/Admin/Orders";
 import AdminProducts from "./pages/Admin/AdminProducts";
 import AdminProductDetail from "./pages/Admin/AdminProductDetail";
 import NewProduct from "./pages/Products/New";
+import AdminHome from "./pages/Admin/AdminHome";
+import { Navigate } from "react-router-dom";
 
 function App() {
   return (
@@ -29,8 +31,10 @@ function App() {
           <Route path="/basket" element={<Basket />} />
           <Route path="/profile" element={<ProductedProfile />} />
           <Route path="/admin">
-            <Route index element={<ProductedAdmin />} />
+            {/* <Route index element={<ProductedAdmin />} /> */}
+            <Route index element={<Navigate to="/admin/home" replace />} />
             <Route path="orders" element={<Orders />} />
+            <Route path="home" element={<AdminHome />} />
             <Route path="products">
               <Route index element={<AdminProducts />} />
               <Route path=":product_id" element={<AdminProductDetail />} />
