@@ -14,12 +14,17 @@ import {
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { useBasket } from "../../contexts/BasketContext";
+import { useCart } from "../../contexts/CartContext";
 
 function Cards({ item }) {
-  const { addToBasket, items } = useBasket();
+  const { addToBasket, items: basketItems } = useBasket();
+  const { addToCart, items: cartItems } = useCart();
 
-  const findBasketItem = items.find(
+  const findBasketItem = basketItems.find(
     (basket_item) => basket_item._id === item._id
+  );
+  const findCartItem = cartItems.find(
+    (cart_item) => cart_item._id === item._id
   );
 
   return (
@@ -53,15 +58,17 @@ function Cards({ item }) {
           >
             {findBasketItem ? "Remove from Basket" : "Add to Basket"}
           </Button>
-          <Button variant="ghost" colorScheme="blue">
-            Add to cart
+          <Button
+            variant="solid"
+            colorScheme={findCartItem ? "red" : "blue"}
+            onClick={() => addToCart(item, findCartItem)}
+          >
+            {findCartItem ? "Remove from Cart" : "Add to Cart"}
           </Button>
         </ButtonGroup>
       </CardFooter>
     </Card>
   );
 }
-
-
 
 export default Cards;
