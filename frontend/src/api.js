@@ -1,112 +1,118 @@
 import axios from "axios";
 
-axios.interceptors.request.use(
-  function (config) {
-    const { origin } = new URL(config.url);
+const api = axios.create({
+  baseURL: process.env.REACT_APP_BASE_ENDPOINT || "http://localhost:4000",
+  timeout: 5000,
+});
 
-    const allowedOrigins = [process.env.REACT_APP_BASE_ENDPOINT];
+api.interceptors.request.use(
+  (config) => {
     const token = localStorage.getItem("access-token");
-
-    if (allowedOrigins.includes(origin)) {
-      config.headers.authorization = token;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
-  function (error) {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-
-
 export const fetchProductList = async ({ pageParam = 1 }) => {
-  const { data } = await axios.get(
-    `${process.env.REACT_APP_BASE_ENDPOINT}/product?page=${pageParam}`
-  );
-
+  const { data } = await api.get(`/api/product?page=${pageParam}`);
   return data;
 };
 
 export const fetchProduct = async (id) => {
-  const { data } = await axios.get(
-    `${process.env.REACT_APP_BASE_ENDPOINT}/product/${id}`
-  );
-
+  const { data } = await api.get(`/api/product/${id}`);
   return data;
 };
 
 export const postProduct = async (input) => {
-  const { data } = await axios.post(
-    `${process.env.REACT_APP_BASE_ENDPOINT}/product/`,
-    input
-  );
-
+  const { data } = await api.post(`/api/product`, input);
   return data;
 };
 
-export const fetcRegister = async (input) => {
-  const { data } = await axios.post(
-    `${process.env.REACT_APP_BASE_ENDPOINT}/auth/register`,
-    input
-  );
-
-  return data;
+export const fetchRegister = async (input) => {
+  try {
+    const { data } = await api.post(`/api/auth/register`, input);
+    if (!data.accessToken || !data.user) {
+      throw new Error("Invalid registration response");
+    }
+    return data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Registration failed");
+  }
 };
 
 export const fetchLogin = async (input) => {
-  const { data } = await axios.post(
-    `${process.env.REACT_APP_BASE_ENDPOINT}/auth/login`,
-    input
-  );
-
-  return data;
+  try {
+    const { data } = await api.post(`/api/auth/login`, input);
+    if (!data.accessToken || !data.user) {
+      throw new Error("Invalid login response");
+    }
+    return data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || "Login failed");
+  }
 };
 
 export const fetchMe = async () => {
-  const { data } = await axios.get(
-    `${process.env.REACT_APP_BASE_ENDPOINT}/auth/me`
-  );
-  return data;
+  try {
+    const { data } = await api.get(`/api/auth/me`);
+    return data;
+  } catch (error) {
+    if (error.response?.status === 401) {
+      const refreshed = await refreshToken();
+      if (refreshed) {
+        const { data } = await api.get(`/api/auth/me`);
+        return data;
+      }
+    }
+    return null;
+  }
 };
 
 export const fetchLogout = async () => {
-  const { data } = await axios.post(
-    `${process.env.REACT_APP_BASE_ENDPOINT}/auth/logout`,
-    {
+  try {
+    const { data } = await api.post(`/api/auth/logout`, {
       refresh_token: localStorage.getItem("refresh-token"),
-    }
-  );
-  return data;
+    });
+    return data;
+  } catch (error) {
+    return null;
+  }
+};
+
+export const refreshToken = async () => {
+  try {
+    const { data } = await api.post(`/api/auth/refresh`, {
+      refresh_token: localStorage.getItem("refresh-token"),
+    });
+    localStorage.setItem("access-token", data.accessToken);
+    localStorage.setItem("refresh-token", data.refreshToken);
+    return data;
+  } catch (error) {
+    localStorage.removeItem("access-token");
+    localStorage.removeItem("refresh-token");
+    return null;
+  }
 };
 
 export const postOrder = async (input) => {
-  const { data } = await axios.post(
-    `${process.env.REACT_APP_BASE_ENDPOINT}/order`,
-    input
-  );
+  const { data } = await api.post(`/api/order`, input);
   return data;
 };
 
 export const fetchOrders = async () => {
-  const { data } = await axios.get(
-    `${process.env.REACT_APP_BASE_ENDPOINT}/order`
-  );
+  const { data } = await api.get(`/api/order`);
   return data;
 };
 
 export const deleteProduct = async (product_id) => {
-  const { data } = await axios.delete(
-    `${process.env.REACT_APP_BASE_ENDPOINT}/product/${product_id}`
-  );
-
+  const { data } = await api.delete(`/api/product/${product_id}`);
   return data;
 };
 
 export const updateProduct = async (input, product_id) => {
-  const { data } = await axios.put(
-    `${process.env.REACT_APP_BASE_ENDPOINT}/product/${product_id}`,
-    input
-  );
-
+  const { data } = await api.put(`/api/product/${product_id}`, input);
   return data;
 };

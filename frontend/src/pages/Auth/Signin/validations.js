@@ -1,23 +1,6 @@
-import * as yup from "yup";
+import * as Yup from "yup";
 
-const validations = yup.object().shape({
-  email: yup.string().email("Nhập email hợp lệ").required("Bắt buộc"),
-  email: yup
-    .string()
-    .email("Email không hợp lệ")
-    .required("Email là bắt buộc"),
-  password: yup
-    .string()
-    // .min(10, "Parolanız en az 10 karakter olmalıdır.")
-    .required()
-    .min(5, "Mật khẩu phải có ít nhất 8 ký tự.")
-    .required("Mật khẩu là bắt buộc"),
-  passwordConfirm: yup
-    .string()
-    // .oneOf([yup.ref("password")], "Parolanız uyuşmuyor")
-    .required()
-    .oneOf([yup.ref("password")], "Mật khẩu xác nhận không khớp")
-    .required("Xác nhận mật khẩu là bắt buộc"),
+export default Yup.object({
+  email: Yup.string().email("Email không hợp lệ").required("Vui lòng nhập email"),
+  password: Yup.string().min(6, "Mật khẩu phải ít nhất 6 ký tự").required("Vui lòng nhập mật khẩu"),
 });
-
-export default validations;

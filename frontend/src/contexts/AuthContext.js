@@ -12,36 +12,48 @@ const AuthProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
       try {
-        const me = await fetchMe();
-
-        if (Object.keys(me).length === 0) {
-          setLoggedIn(false);
-        } else {
-          setLoggedIn(true);
-          setUser(me);
+        const token = localStorage.getItem("access-token");
+        if (!token) {
+          setLoading(false);
+          return;
         }
-
-        setLoading(false);
+        const me = await fetchMe();
+        if (me && Object.keys(me).length > 0) {
+          setUser(me);
+          setLoggedIn(true);
+        } else {
+          setLoggedIn(false);
+          localStorage.removeItem("access-token");
+          localStorage.removeItem("refresh-token");
+        }
       } catch (e) {
+        localStorage.removeItem("access-token");
+        localStorage.removeItem("refresh-token");
+      } finally {
         setLoading(false);
       }
     })();
   }, []);
 
   const login = (data) => {
-    setLoggedIn(true);
-    setUser(data.user);
-
-    localStorage.setItem("access-token", data.accessToken);
-    localStorage.setItem("refresh-token", data.refreshToken);
+    if (data && data.accessToken && data.user) {
+      setLoggedIn(true);
+      setUser(data.user);
+      localStorage.setItem("access-token", data.accessToken);
+      localStorage.setItem("refresh-token", data.refreshToken || "");
+    } else {
+      throw new Error("Invalid login data");
+    }
   };
 
   const logout = async () => {
+    try {
+      await fetchLogout();
+    } catch (e) {
+      console.error("Logout failed:", e);
+    }
     setLoggedIn(false);
     setUser(null);
-
-    await fetchLogout();
-
     localStorage.removeItem("access-token");
     localStorage.removeItem("refresh-token");
   };
