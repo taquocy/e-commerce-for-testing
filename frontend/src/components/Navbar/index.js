@@ -50,9 +50,9 @@ function Navbar() {
                 </Button>
               </Link>
             )}
-            <Link to="/admin">
+            <Link to="/admin/products/new">
               <Button colorScheme="pink" variant="ghost">
-                Admin
+                Add New
               </Button>
             </Link>
             <Link to="/profile">
