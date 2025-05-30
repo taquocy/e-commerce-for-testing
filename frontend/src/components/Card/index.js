@@ -50,6 +50,9 @@ function Cards({ item }) {
             variant="solid"
             colorScheme={findBasketItem ? "red" : "green"}
             onClick={() => addToBasket(item, findBasketItem)}
+            data-testid={
+              findBasketItem ? "remove-from-basket-btn" : "add-to-basket-btn"
+            }
           >
             {findBasketItem ? "Remove from Basket" : "Add to Basket"}
           </Button>
@@ -61,7 +64,5 @@ function Cards({ item }) {
     </Card>
   );
 }
-
-
 
 export default Cards;
