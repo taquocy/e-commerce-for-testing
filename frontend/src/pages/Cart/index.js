@@ -26,7 +26,7 @@ function Cart() {
         <>
           <ul style={{ listStyleType: "decimal", display: "flex" }}>
             {items.map((item) => (
-              <li key={item._id} style={{ margin: 20, width: "25%" }}>
+              <li key={item._id} style={{ margin: 20, width: "25%", listStyleType:"none" }}>
                 <Link to={`/product/${item._id}`}>
                   <Text fontSize="22">
                     {item.title} - {item.price} $
