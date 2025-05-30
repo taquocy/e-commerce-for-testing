@@ -4,10 +4,12 @@ import { Link } from "react-router-dom";
 import { Button } from "@chakra-ui/react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useBasket } from "../../contexts/BasketContext";
+import { useCart } from "../../contexts/CartContext";
 
 function Navbar() {
-  const { loggedIn, user } = useAuth();
-  const { items } = useBasket();
+  const { loggedIn } = useAuth();
+  const { items: basketItems } = useBasket();
+  const { items: cartItems } = useCart();
 
   return (
     <nav className={styles.nav}>
@@ -34,22 +36,25 @@ function Navbar() {
         )}
         {loggedIn && (
           <>
-            {items.length > 0 && (
+            {basketItems.length > 0 && (
               <Link to="/basket">
                 <Button colorScheme="pink" variant="outline">
-                  Basket ({items.length})
+                  Basket ({basketItems.length})
                 </Button>
               </Link>
             )}
-
-            {user?.role === "admin" && (
-              <Link to="/admin">
-                <Button colorScheme="pink" variant="ghost">
-                  Admin
+            {cartItems.length > 0 && (
+              <Link to="/cart">
+                <Button colorScheme="teal" variant="outline">
+                  Cart ({cartItems.length})
                 </Button>
               </Link>
             )}
-
+            <Link to="/admin/products/new">
+              <Button colorScheme="pink" variant="ghost">
+                Add New
+              </Button>
+            </Link>
             <Link to="/profile">
               <Button>Profile</Button>
             </Link>

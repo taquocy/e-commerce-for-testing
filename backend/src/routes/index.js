@@ -11,7 +11,7 @@ import order from './order';
 const router = Router();
 
 router.get('/', (req, res) => {
-  res.send('hey');
+  res.send('API is runningAPI is runningAPI is runningAPI is runningAPI is running');
 });
 
 router.use('/auth', auth);
