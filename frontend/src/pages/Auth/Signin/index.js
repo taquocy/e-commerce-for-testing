@@ -125,7 +125,7 @@ function Signin({ history }) {
                 </Link>
               </Box>
 
-              <Button mt="4" width="full" type="submit">
+              <Button mt="4" width="full" type="submit" data-testid="signin-btn">
                 Sign In
               </Button>
             </form>
