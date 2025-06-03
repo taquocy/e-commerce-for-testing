@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Signin from "./pages/Auth/Signin/index";
 import Signup from "./pages/Auth/Signup/index";
@@ -14,6 +14,7 @@ import Orders from "./pages/Admin/Orders";
 import AdminProducts from "./pages/Admin/AdminProducts";
 import AdminProductDetail from "./pages/Admin/AdminProductDetail";
 import NewProduct from "./pages/Products/New";
+import AdminHome from "./pages/Admin/AdminHome";
 
 function App() {
   return (
@@ -28,9 +29,10 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} /> {/* Thêm Forgot Password */}
           <Route path="/basket" element={<Basket />} />
           <Route path="/profile" element={<ProductedProfile />} />
-          <Route path="/admin">
-            <Route index element={<ProductedAdmin />} />
+          <Route path="/admin" element={<ProductedAdmin />}>
+            <Route index element={<Navigate to="/admin/home" replace />} />
             <Route path="orders" element={<Orders />} />
+            <Route path="home" element={<AdminHome />} />
             <Route path="products">
               <Route index element={<AdminProducts />} />
               <Route path=":product_id" element={<AdminProductDetail />} />

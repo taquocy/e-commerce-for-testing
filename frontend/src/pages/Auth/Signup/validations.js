@@ -7,10 +7,11 @@ const validations = yup.object().shape({
     .required("Email là bắt buộc"),
   password: yup
     .string()
-    .min(5, "Mật khẩu phải có ít nhất 8 ký tự.")
+    .min(8, "Mật khẩu phải có ít nhất 8 ký tự.")
     .required("Mật khẩu là bắt buộc"),
   passwordConfirm: yup
     .string()
+    .min(8, "Mật khẩu xác nhận phải có ít nhất 8 ký tự.")
     .oneOf([yup.ref("password")], "Mật khẩu xác nhận không khớp")
     .required("Xác nhận mật khẩu là bắt buộc"),
 });

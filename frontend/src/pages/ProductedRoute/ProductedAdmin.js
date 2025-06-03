@@ -1,18 +1,19 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import AdminHome from "../Admin/AdminHome";
+import { Navigate, Outlet } from "react-router-dom";
 
 function ProductedAdmin() {
   const { user, loggedIn } = useAuth();
 
-  return (
-    <>
-      {loggedIn === true && user.role === "admin" && <AdminHome />}
-      {loggedIn === true && user.role === "user" && <Navigate to={"/"} />}
-      {loggedIn === false && <Navigate to={"/"} />}
-    </>
-  );
+  if (!loggedIn) {
+    return <Navigate to="/signin" replace />;
+  }
+
+  if (user?.role !== "admin") {
+    return <Navigate to="/404" replace />;
+  }
+
+  return <Outlet />;
 }
 
 export default ProductedAdmin;

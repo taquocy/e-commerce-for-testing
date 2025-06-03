@@ -16,12 +16,15 @@ import { useFormik } from "formik";
 import validationSchema from "./validations";
 import { fetcRegister } from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Signup({ history }) {
   const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-
+  // hiện thị thành công khi mà đăng ký thành công
+  const [successMessage, setSuccessMessage] = useState("");
+  const navigate = useNavigate(); // hook thay cho history
   const handlePasswordVisibility = () => setShowPassword(!showPassword);
   const handlePasswordConfirmVisibility = () =>
     setShowPasswordConfirm(!showPasswordConfirm);
@@ -47,7 +50,12 @@ function Signup({ history }) {
           password: values.password,
         });
         login(registerResponse);
-        history.push("/profile");
+        setSuccessMessage("Đăng ký thành công!"); 
+        setTimeout(() => {
+          // Chuyển hướng sau khi đăng ký thành công đến trang login
+          // history.push("/profile");
+          navigate("/signin"); // chuyển hướng về trang signin
+        }, 1500); // Chờ 1.5s trước khi chuyển trang (tùy chọn)
       } catch (e) {
         bag.setErrors({ general: e.response?.data?.message || "Registration failed." });
       }
@@ -56,6 +64,9 @@ function Signup({ history }) {
 
   return (
     <div>
+       {successMessage && (
+        <Alert status="success">{successMessage}</Alert>
+      )}
       <Flex align="center" width="full" justifyContent="center">
         <Box pt={10}>
           <Box textAlign="center">
@@ -149,6 +160,7 @@ function Signup({ history }) {
           </Box>
         </Box>
       </Flex>
+     
     </div>
   );
 }

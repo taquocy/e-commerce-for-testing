@@ -53,9 +53,9 @@ function Basket() {
       )}
       {items.length > 0 && (
         <>
-          <ul style={({ listStyleType: "decimal" }, { display: "flex" })}>
+          <ul style={{ listStyleType: "none", display: "flex", flexWrap: "wrap", gap: "20px", padding: 0 }}>
             {items.map((item) => (
-              <li key={item._id} style={({ margin: 20 }, { width: "25%" })}>
+              <li key={item._id} style={{ width: "25%", border: "1px solid #eee", padding: "10px" }}>
                 <Link to={`/product/${item._id}`}>
                   <Text fontSize="22">
                     {item.title} - {item.price} $
@@ -78,28 +78,29 @@ function Basket() {
                 >
                   Remove from Basket
                 </Button>
+                
               </li>
             ))}
           </ul>
           <Box mt="10">
             <Text fontSize="22">Total: {total}$</Text>
           </Box>
-          {/* Order kısmı buradan sonra başlamaktadır. */}
-          <Button onClick={onOpen} colorScheme="whatsapp" mt={4}>
-            Buy now
-          </Button>
-
+        
+  {/* Order kısmı buradan sonra başlamaktadır. */}
+                <Button onClick={onOpen} colorScheme="green" mt={4}>
+                  Buy now
+                </Button>     
           <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>Create your account</ModalHeader>
+              <ModalHeader>Enter your address</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={6}>
                 <FormControl>
-                  <FormLabel>Adress</FormLabel>
+                  <FormLabel>Address</FormLabel>
                   <Textarea
                     ref={initialRef}
-                    placeholder="Adress"
+                    placeholder="Address"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                   />

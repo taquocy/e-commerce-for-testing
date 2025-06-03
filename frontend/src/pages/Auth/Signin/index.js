@@ -21,11 +21,15 @@ import { fetchLogin } from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
 import { Link as RouterLink } from "react-router-dom"; // Import RouterLink từ react-router-dom : npm install react-router-dom
 
+import { useNavigate } from "react-router-dom";
+
 function Signin({ history }) {
   const { login } = useAuth();
   const [showErrorIndicator, setShowErrorIndicator] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
+  const navigate = useNavigate(); // hook thay cho history
+// hiện thị thành công khi mà đăng ký thành công
+  const [successMessage, setSuccessMessage] = useState("");
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -45,7 +49,11 @@ function Signin({ history }) {
           password: values.password,
         });
         login(loginResponse);
-        history.push("/profile");
+        // history.push("/profile");
+        setSuccessMessage("Đăng nhập thành công!"); 
+        setTimeout(() => {
+            navigate("/"); // chuyển hướng về trang home
+          }, 1500); // Chờ 1.5s trước khi chuyển trang (tùy chọn)
       } catch (e) {
         bag.setErrors({ general: e.response.data.message });
       }
@@ -54,6 +62,9 @@ function Signin({ history }) {
 
   return (
     <div>
+       {successMessage && (
+              <Alert status="success">{successMessage}</Alert>
+        )}
       <Flex align="center" width="full" justifyContent="center">
         <Box pt={10}>
           <Box textAlign="center">
@@ -132,6 +143,7 @@ function Signin({ history }) {
           </Box>
         </Box>
       </Flex>
+      
     </div>
   );
 }

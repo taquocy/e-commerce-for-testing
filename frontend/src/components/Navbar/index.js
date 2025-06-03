@@ -41,8 +41,17 @@ function Navbar() {
                 </Button>
               </Link>
             )}
-
-            {user?.role === "admin" && (
+            {/* làm user cũng có thể vào admin được 
+            {(user?.role === "admin" || user?.role === "user") && (
+              <Link to="/admin">
+                <Button colorScheme="pink" variant="ghost">
+                  Admin
+                </Button>
+              </Link>
+            )} */}
+            {/* nếu không muốn user vào admin thì bỏ đoạn trên đi */}
+            
+            {(user?.role === "admin") && (
               <Link to="/admin">
                 <Button colorScheme="pink" variant="ghost">
                   Admin
