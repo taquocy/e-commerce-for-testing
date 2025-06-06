@@ -6,150 +6,163 @@ import {
   FormControl,
   FormLabel,
   Input,
-  InputGroup,
-  InputRightElement,
   Button,
   Alert,
-  Text,
+  AlertIcon,
+  FormErrorMessage,
+  InputGroup,
+  InputRightElement,
 } from "@chakra-ui/react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useFormik } from "formik";
-import validationSchema from "./validations";
-import { fetcRegister } from "../../../api";
-import { useAuth } from "../../../contexts/AuthContext";
+import { registerValidation } from "./validations";
+import { fetchRegister } from "../../../api";
+import { useNavigate } from "react-router-dom"; // ✅ Thêm điều hướng sau khi đăng ký
 
-function Signup({ history }) {
-  const { login } = useAuth();
+function Signup() {
   const [showPassword, setShowPassword] = useState(false);
-  const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
-
-  const handlePasswordVisibility = () => setShowPassword(!showPassword);
-  const handlePasswordConfirmVisibility = () =>
-    setShowPasswordConfirm(!showPasswordConfirm);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigate = useNavigate(); // ✅ Sử dụng navigate
 
   const formik = useFormik({
     initialValues: {
       email: "",
       password: "",
-      passwordConfirm: "",
+      confirmPassword: "",
     },
-    validationSchema,
+    validationSchema: registerValidation,
     onSubmit: async (values, bag) => {
-      // Kiểm tra nếu form có lỗi
-      const errors = await bag.validateForm(values);
-      if (Object.keys(errors).length > 0) {
-        bag.setErrors({ general: "Please fill in all required fields correctly." });
-        return;
-      }
-
       try {
-        const registerResponse = await fetcRegister({
+        const registerResponse = await fetchRegister({
           email: values.email,
           password: values.password,
         });
-        login(registerResponse);
-        history.push("/profile");
+
+        // Tùy theo backend trả về
+        if (registerResponse?.accessToken || registerResponse?.success) {
+          alert("Đăng ký thành công! Đang chuyển sang trang đăng nhập...");
+          formik.resetForm();
+          navigate("/signin"); // ✅ Điều hướng sau khi đăng ký
+        } else {
+          bag.setErrors({
+            general: registerResponse.message || "Đăng ký thất bại",
+          });
+        }
       } catch (e) {
-        bag.setErrors({ general: e.response?.data?.message || "Registration failed." });
+        bag.setErrors({
+          general: e.response?.data?.message || "Lỗi kết nối. Vui lòng thử lại.",
+        });
       }
     },
   });
 
   return (
-    <div>
-      <Flex align="center" width="full" justifyContent="center">
-        <Box pt={10}>
-          <Box textAlign="center">
-            <Heading>Sign Up</Heading>
-          </Box>
-          <Box my={5}>
-            {formik.errors.general && (
-              <Alert status="error">{formik.errors.general}</Alert>
-            )}
-          </Box>
-          <Box my={5} textAlign="left">
-            <form onSubmit={formik.handleSubmit}>
-              <FormControl isInvalid={formik.touched.email && formik.errors.email}>
-                <FormLabel>E-mail</FormLabel>
+    <Flex align="center" width="full" justifyContent="center">
+      <Box pt={10} width="400px">
+        <Box textAlign="center">
+          <Heading>Sign Up</Heading>
+        </Box>
+
+        <Box my={5}>
+          {formik.errors.general && (
+            <Alert status="error">
+              <AlertIcon />
+              {formik.errors.general}
+            </Alert>
+          )}
+        </Box>
+
+        <Box my={5} textAlign="left">
+          <form onSubmit={formik.handleSubmit}>
+            {/* Email */}
+            <FormControl isInvalid={formik.touched.email && formik.errors.email}>
+              <FormLabel>Email</FormLabel>
+              <Input
+                name="email"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+                placeholder="example@email.com"
+              />
+              <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+            </FormControl>
+
+            {/* Password */}
+            <FormControl
+              mt={4}
+              isInvalid={formik.touched.password && formik.errors.password}
+            >
+              <FormLabel>Password</FormLabel>
+              <InputGroup>
                 <Input
-                  name="email"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.email}
+                  value={formik.values.password}
                 />
-                {formik.touched.email && formik.errors.email && (
-                  <Text color="red.500" mt={1}>
-                    {formik.errors.email}
-                  </Text>
-                )}
-              </FormControl>
+                <InputRightElement width="4.5rem">
+                  <Button
+                    h="2rem"
+                    w="2rem"
+                    p={0}
+                    borderRadius="full"
+                    bg="gray.200"
+                    _hover={{ bg: "gray.300" }}
+                    _active={{ bg: "gray.400" }}
+                    onClick={() => setShowPassword(!showPassword)}
+                    type="button"
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+              <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
+            </FormControl>
 
-              <FormControl
-                mt="4"
-                isInvalid={formik.touched.password && formik.errors.password}
-              >
-                <FormLabel>Password</FormLabel>
-                <InputGroup>
-                  <Input
-                    name="password"
-                    type={showPassword ? "text" : "password"}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.password}
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button h="1.75rem" size="sm" onClick={handlePasswordVisibility}>
-                      {showPassword ? "😑" : "👁"}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-                {formik.touched.password && formik.errors.password && (
-                  <Text color="red.500" mt={1}>
-                    {formik.errors.password}
-                  </Text>
-                )}
-              </FormControl>
+            {/* Confirm Password */}
+            <FormControl
+              mt={4}
+              isInvalid={
+                formik.touched.confirmPassword && formik.errors.confirmPassword
+              }
+            >
+              <FormLabel>Confirm Password</FormLabel>
+              <InputGroup>
+                <Input
+                  name="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.confirmPassword}
+                />
+                <InputRightElement width="4.5rem">
+                  <Button
+                    h="2rem"
+                    w="2rem"
+                    p={0}
+                    borderRadius="full"
+                    bg="gray.200"
+                    _hover={{ bg: "gray.300" }}
+                    _active={{ bg: "gray.400" }}
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    type="button"
+                  >
+                    {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+              <FormErrorMessage>{formik.errors.confirmPassword}</FormErrorMessage>
+            </FormControl>
 
-              <FormControl
-                mt="4"
-                isInvalid={
-                  formik.touched.passwordConfirm && formik.errors.passwordConfirm
-                }
-              >
-                <FormLabel>Password Confirm</FormLabel>
-                <InputGroup>
-                  <Input
-                    name="passwordConfirm"
-                    type={showPasswordConfirm ? "text" : "password"}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                    value={formik.values.passwordConfirm}
-                  />
-                  <InputRightElement width="4.5rem">
-                    <Button
-                      h="1.75rem"
-                      size="sm"
-                      onClick={handlePasswordConfirmVisibility}
-                    >
-                      {showPasswordConfirm ? "😑" : "👁"}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
-                {formik.touched.passwordConfirm &&
-                  formik.errors.passwordConfirm && (
-                    <Text color="red.500" mt={1}>
-                      {formik.errors.passwordConfirm}
-                    </Text>
-                  )}
-              </FormControl>
-
-              <Button mt="4" width="full" type="submit">
-                Sign Up
-              </Button>
-            </form>
-          </Box>
+            {/* Submit */}
+            <Button mt={6} width="full" type="submit" colorScheme="teal">
+              Sign Up
+            </Button>
+          </form>
         </Box>
-      </Flex>
-    </div>
+      </Box>
+    </Flex>
   );
 }
 

@@ -17,51 +17,54 @@ axios.interceptors.request.use(
   }
 );
 
-
-
+// ✔ FETCH PRODUCT LIST
 export const fetchProductList = async ({ pageParam = 1 }) => {
   const { data } = await axios.get(
     `${process.env.REACT_APP_BASE_ENDPOINT}/product?page=${pageParam}`
   );
-
   return data;
 };
 
+// ✔ FETCH SINGLE PRODUCT
 export const fetchProduct = async (id) => {
   const { data } = await axios.get(
     `${process.env.REACT_APP_BASE_ENDPOINT}/product/${id}`
   );
-
   return data;
 };
 
+// ✔ POST PRODUCT
 export const postProduct = async (input) => {
   const { data } = await axios.post(
     `${process.env.REACT_APP_BASE_ENDPOINT}/product/`,
     input
   );
-
   return data;
 };
 
-export const fetcRegister = async (input) => {
+// ✅ ✔ REGISTER (đã sửa)
+export const fetchRegister = async ({ email, password }) => {
   const { data } = await axios.post(
     `${process.env.REACT_APP_BASE_ENDPOINT}/auth/register`,
-    input
+    {
+      email,
+      password,
+    }
   );
-
   return data;
 };
 
+
+// ✔ LOGIN
 export const fetchLogin = async (input) => {
   const { data } = await axios.post(
     `${process.env.REACT_APP_BASE_ENDPOINT}/auth/login`,
     input
   );
-
   return data;
 };
 
+// ✔ FETCH ME
 export const fetchMe = async () => {
   const { data } = await axios.get(
     `${process.env.REACT_APP_BASE_ENDPOINT}/auth/me`
@@ -69,6 +72,7 @@ export const fetchMe = async () => {
   return data;
 };
 
+// ✔ LOGOUT
 export const fetchLogout = async () => {
   const { data } = await axios.post(
     `${process.env.REACT_APP_BASE_ENDPOINT}/auth/logout`,
@@ -79,6 +83,7 @@ export const fetchLogout = async () => {
   return data;
 };
 
+// ✔ POST ORDER
 export const postOrder = async (input) => {
   const { data } = await axios.post(
     `${process.env.REACT_APP_BASE_ENDPOINT}/order`,
@@ -87,6 +92,7 @@ export const postOrder = async (input) => {
   return data;
 };
 
+// ✔ FETCH ORDERS
 export const fetchOrders = async () => {
   const { data } = await axios.get(
     `${process.env.REACT_APP_BASE_ENDPOINT}/order`
@@ -94,19 +100,19 @@ export const fetchOrders = async () => {
   return data;
 };
 
+// ✔ DELETE PRODUCT
 export const deleteProduct = async (product_id) => {
   const { data } = await axios.delete(
     `${process.env.REACT_APP_BASE_ENDPOINT}/product/${product_id}`
   );
-
   return data;
 };
 
+// ✔ UPDATE PRODUCT
 export const updateProduct = async (input, product_id) => {
   const { data } = await axios.put(
     `${process.env.REACT_APP_BASE_ENDPOINT}/product/${product_id}`,
     input
   );
-
   return data;
 };

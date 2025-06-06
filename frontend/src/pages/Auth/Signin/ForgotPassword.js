@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Flex,
@@ -14,41 +13,57 @@ import {
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Logic xử lý gửi email reset mật khẩu
-    setSubmitted(true);
+    setError("");
+
+    try {
+      // TODO: Gọi API gửi email reset mật khẩu ở đây, ví dụ:
+      // await sendResetPasswordEmail(email);
+
+      // Giả lập thành công
+      setSubmitted(true);
+    } catch (err) {
+      setError("Không thể gửi email. Vui lòng thử lại sau.");
+    }
   };
 
   return (
-    <Flex align="center" width="full" justifyContent="center">
-      <Box pt={10}>
-        <Box textAlign="center">
-          <Heading>Forgot Password</Heading>
-        </Box>
+    <Flex align="center" justifyContent="center" width="full" pt={10}>
+      <Box width="400px">
+        <Heading textAlign="center" mb={6}>
+          Forgot Password
+        </Heading>
+
         {submitted ? (
-          <Alert status="success" mt={5}>
-            Instructions to reset your password have been sent to {email}.
+          <Alert status="success" mb={4}>
+            Hướng dẫn đặt lại mật khẩu đã được gửi tới email: {email}
           </Alert>
         ) : (
-          <Box my={5} textAlign="left">
-            <form onSubmit={handleSubmit}>
-              <FormControl>
-                <FormLabel>E-mail</FormLabel>
-                <Input
-                  name="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </FormControl>
-              <Button mt="4" width="full" type="submit" colorScheme="teal">
-                Send Instructions
-              </Button>
-            </form>
-          </Box>
+          <form onSubmit={handleSubmit}>
+            <FormControl isInvalid={error !== ""} mb={4}>
+              <FormLabel>Email</FormLabel>
+              <Input
+                type="email"
+                value={email}
+                placeholder="Nhập email"
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </FormControl>
+
+            {error && (
+              <Alert status="error" mb={4}>
+                {error}
+              </Alert>
+            )}
+
+            <Button type="submit" colorScheme="teal" width="full">
+              Gửi hướng dẫn
+            </Button>
+          </form>
         )}
       </Box>
     </Flex>
