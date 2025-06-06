@@ -1,6 +1,5 @@
-version: '3.3'
-
 services:
+  # Frontend service
   frontend:
     build:
       context: ./frontend
@@ -12,15 +11,33 @@ services:
       - /usr/src/app/node_modules
     environment:
       - NODE_ENV=development
+    depends_on:
+      - backend
 
+  # Backend service
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "4000:4000"
+      - "5000:5000"
     volumes:
       - ./backend:/usr/src/app
       - /usr/src/app/node_modules
     environment:
       - NODE_ENV=development
+      - MONGO_URI=mongodb://mongo:27017/ecommerce
+    depends_on:
+      - mongo
+
+  # MongoDB service
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+# Định nghĩa persistent volume cho MongoDB
+volumes:
+  mongo-data:
