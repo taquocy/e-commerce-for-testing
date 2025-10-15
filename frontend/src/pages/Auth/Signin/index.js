@@ -45,7 +45,9 @@ function Signin({ history }) {
           password: values.password,
         });
         login(loginResponse);
-        history.push("/profile");
+        // chuyển về home sau khi login
+        window.location.href = "/";
+
       } catch (e) {
         bag.setErrors({ general: e.response.data.message });
       }
