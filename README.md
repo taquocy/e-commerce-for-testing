@@ -9,6 +9,7 @@
 npm uninstall bcrypt
 npm install bcryptjs
 
+QUOC HUNG SUA CODE TAI DAY
 
 ## Docker
 # Lenh 1: Build Docker Image
