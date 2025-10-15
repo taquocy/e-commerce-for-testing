@@ -14,12 +14,12 @@ import {
   InputRightElement,
   Link,
 } from "@chakra-ui/react";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Import biểu tượng từ react-icons
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useFormik } from "formik";
 import validationSchema from "./validations";
 import { fetchLogin } from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
-import { Link as RouterLink } from "react-router-dom"; // Import RouterLink từ react-router-dom : npm install react-router-dom
+import { Link as RouterLink } from "react-router-dom";
 
 function Signin({ history }) {
   const { login } = useAuth();
@@ -47,7 +47,7 @@ function Signin({ history }) {
         login(loginResponse);
         history.push("/profile");
       } catch (e) {
-        bag.setErrors({ general: e.response.data.message });
+        bag.setErrors({ general: e.response?.data?.message || "Login failed." });
       }
     },
   });
@@ -80,6 +80,7 @@ function Signin({ history }) {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
+                  placeholder="Enter your email"
                 />
                 <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
               </FormControl>
@@ -100,6 +101,7 @@ function Signin({ history }) {
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     value={formik.values.password}
+                    placeholder="Enter your password"
                   />
                   <InputRightElement width="4.5rem">
                     <Button
@@ -121,7 +123,7 @@ function Signin({ history }) {
 
               <Box mt={2} textAlign="right">
                 <Link as={RouterLink} to="/forgot-password" color="teal.500">
-                  Quên mật khẩu?
+                  Forgot password?
                 </Link>
               </Box>
 

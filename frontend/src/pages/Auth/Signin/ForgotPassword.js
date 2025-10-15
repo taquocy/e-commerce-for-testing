@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Flex,
@@ -9,15 +8,30 @@ import {
   Input,
   Button,
   Alert,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState("");
+
+  const validateEmail = (value) => {
+    if (!value) return "Email là bắt buộc";
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!re.test(value)) return "Email không hợp lệ";
+    return "";
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Logic xử lý gửi email reset mật khẩu
+    const validationError = validateEmail(email.trim());
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+    setError("");
+    // TODO: gọi API gửi hướng dẫn reset mật khẩu nếu backend có endpoint
     setSubmitted(true);
   };
 
@@ -25,27 +39,29 @@ function ForgotPassword() {
     <Flex align="center" width="full" justifyContent="center">
       <Box pt={10}>
         <Box textAlign="center">
-          <Heading>Forgot Password</Heading>
+          <Heading>Quên mật khẩu</Heading>
         </Box>
         {submitted ? (
           <Alert status="success" mt={5}>
-            Instructions to reset your password have been sent to {email}.
+            Hướng dẫn đặt lại mật khẩu đã được gửi tới {email}.
           </Alert>
         ) : (
           <Box my={5} textAlign="left">
-            <form onSubmit={handleSubmit}>
-              <FormControl>
+            <form onSubmit={handleSubmit} noValidate>
+              <FormControl isInvalid={!!error}>
                 <FormLabel>E-mail</FormLabel>
                 <Input
                   name="email"
                   type="email"
-                  placeholder="Enter your email"
+                  placeholder="Nhập email của bạn"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
+                <FormErrorMessage>{error}</FormErrorMessage>
               </FormControl>
+
               <Button mt="4" width="full" type="submit" colorScheme="teal">
-                Send Instructions
+                Gửi hướng dẫn
               </Button>
             </form>
           </Box>
