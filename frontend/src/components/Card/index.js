@@ -27,13 +27,13 @@ function Cards({ item }) {
       <Link to={`/product/${item._id}`}>
         <CardBody>
           <Image
-            src={item.photos[0]}
-            alt="Product"
-            borderRadius="lg"
-            loading="lazy"
-            boxSize={300}
-            objectFit="cover"
-          />
+  src={item.photos[0]}
+  alt="Product"
+  borderRadius="lg"
+  loading="lazy"
+  boxSize={300}
+  objectFit="contain"
+/>
           <Stack mt="6" spacing="3">
             <Heading size="md">{item.title}</Heading>
             <Text>{moment(item.createdAt).format("DD/MM/YYYY")}</Text>
